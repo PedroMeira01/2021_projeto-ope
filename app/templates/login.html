@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> Acesse sua conta! </h1>
+    <form action="" method="POST">
+        {{ form.email.label }} <br>
+        {{ form.email(class='exemplo-de-como-usar-atributos')}} <br>
+        <hr>
+        {{ form.senha.label }} <br>
+        {{ form.senha }} <br>
+        <hr>
+        {{ form.lembrar_me() }} {{ form.lembrar_me.label }} <br>
+        <hr>
+        {{ form.entrar() }}
+    </form>
+{% endblock %}
