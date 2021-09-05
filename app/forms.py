@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
     # vem do módulo "validators" do pacote WTForms.
 
     # O primeiro parametro das instâncias abaixo corresponde a label do formulário
-    email = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Passowrd', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Entrar')
+    email = StringField('E-mail', validators=[DataRequired()])
+    senha = PasswordField('Senha', validators=[DataRequired()])
+    lembrar_me = BooleanField('Lembrar Me')
+    entrar = SubmitField('Entrar')
