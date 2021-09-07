@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> {{ titulo }} </h1>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        
+        {{ form.nome.label }} <br>
+        {{ form.nome}} <br>
+        {% for error in form.nome.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <hr>
+        {{ form.email.label }} <br>
+        {{ form.email }} <br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <hr>
+        {{ form.senha.label }} <br>
+        {{ form.senha }} <br>
+        {% for error in form.senha.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <hr>
+        {{ form.confirma_senha.label }} <br>
+        {{ form.confirma_senha }} <br>
+        {% for error in form.confirma_senha.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <hr>
+        {{ form.cadastrar() }}
+    </form>
+{% endblock %}

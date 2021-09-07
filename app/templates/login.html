@@ -2,12 +2,22 @@
 
 {% block content %}
     <h1> Acesse sua conta! </h1>
+    <p>Novo usuário? <a href="{{ url_for('cadastro') }}">Crie uma conta!</a></p>
     <form action="" method="POST">
+        <!-- CSRF Token -->
+        {{ form.hidden_tag() }}
+
         {{ form.email.label }} <br>
         {{ form.email(class='exemplo-de-como-usar-atributos')}} <br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
         <hr>
         {{ form.senha.label }} <br>
         {{ form.senha }} <br>
+        {% for error in form.senha.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
         <hr>
         {{ form.lembrar_me() }} {{ form.lembrar_me.label }} <br>
         <hr>
