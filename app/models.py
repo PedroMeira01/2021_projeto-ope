@@ -37,6 +37,12 @@ class Barbeiro(db.Model):
     def __repr__(self):
         return f"<Barbeiro {self.nome}>"
 
+    def criptografar_senha(self, senha):
+        self.senha = generate_password_hash(senha)
+
+    def checar_senha(self, senha):
+        return check_password_hash(self.senha, senha)
+
 class Servico(db.Model):
     id_servico = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100))
