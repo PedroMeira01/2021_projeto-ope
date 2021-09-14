@@ -1,16 +1,59 @@
 from flask import render_template, redirect, url_for, flash, request
 from app import app, db
 from app.forms import LoginForm, CadastrarUsuario
-from app.models import Usuario
+from app.models import Usuario, Barbeiro, Servico, Reserva
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
+from datetime import timedelta
 
 # HOME -------------------------------------------------
 @app.route('/')
 @app.route('/index')
 @login_required
-def index():
-    return render_template('index.html', titulo="Home")
+def index(id_barbeiro=1, dia=None):
+    dados = {}
+    # Buscando todos os barbeiros
+    barbeiros = busca_barbeiros()
+    # Busca quadro de horarios do barbeiro escolhido
+    # por padrão será o de id 1
+    quadro_de_horarios = gerar_quadro_horarios()
+    reservas = busca_reservas(id_barbeiro)
+
+    # Montando o dicionário com os dados que irão para a view
+    dados['barbeiros'] = barbeiros
+    dados['quadro_de_horarios'] = quadro_de_horarios
+
+    return render_template('index.html', titulo="Home", dados=dados)
+
+def busca_barbeiros():
+    dados = Barbeiro.query.all()
+    return dados
+
+def busca_reservas(id_barbeiro):
+    dados = Reserva.query.\
+    filter_by(barbeiro_id=id_barbeiro).all()
+    return dados
+
+def gerar_quadro_horarios():
+    horario = timedelta(hours=10)
+    horario_limite = timedelta(hours=19)
+    # Horário de almoço
+    horarios_restritos = [
+        timedelta(hours=13), 
+        timedelta(hours=13, minutes=30)
+    ]
+    
+    acrescimo = timedelta(minutes=30)
+    
+    quadro_de_horarios = [str(horario)]
+    
+    while horario < horario_limite:
+        horario = horario + acrescimo
+        if horario in horarios_restritos:
+            continue
+        quadro_de_horarios.append(str(horario))
+
+    return quadro_de_horarios
 
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])

@@ -1,5 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+	<h2>Agende seu horário</h2>
+	<div>
+		<h3>lista de barbeiros</h3>
+		<ul>
+			{% for b in dados['barbeiros'] %}
+				<li><a href="#" data-barbeiro="{{ b.id_barbeiro }}">{{ b.nome }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	<hr>
+	<input type="date">
+	<hr>
+	<div id="quadro-de-horarios">
+		<form action="">
+			{% for horario in dados['quadro_de_horarios'] %}
+			<div>
+				<label>{{ horario }}</label>
+				<input type="radio" value="horario" name="horario">
+			</div>
+			{% endfor %}
+		</form>
+	</div>
 {% endblock %}
