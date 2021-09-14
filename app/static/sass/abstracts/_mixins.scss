@@ -1,0 +1,47 @@
+// Definindo cores em classes
+$brown: #150303;
+
+$red: #fb0000;
+
+$black: #2d2d2d;
+
+$gray: #cccccc;
+
+$color-tertiary: #2d2d2d;
+
+$white: #fff;
+$black-full: #000;
+
+@mixin defineColor($class, $color) {
+  .c-#{$class} {
+    color: $color;
+  }
+  .c-#{$class}-event:hover,
+  .c-#{$class}-event:active,
+  .c-#{$class}-event:focus {
+    color: $color;
+  }
+  .bgc-#{$class} {
+    background-color: $color;
+  }
+  .bgc-#{$class}-event:hover,
+  .bgc-#{$class}-event:active,
+  .bgc-#{$class}-event:focus {
+    background-color: $color;
+  }
+  .bdc-#{$class} {
+    border-color: $color;
+  }
+  .bdc-#{$class}-event:hover,
+  .bdc-#{$class}-event:active,
+  .bdc-#{$class}-event:focus {
+    border-color: $color;
+  }
+}
+
+@include defineColor('brown', $brown);
+@include defineColor('red', $red);
+@include defineColor('black', $black);
+@include defineColor('white', $white);
+@include defineColor('black--full', $black-full);
+@include defineColor('gray', $gray);
