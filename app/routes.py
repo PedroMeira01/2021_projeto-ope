@@ -4,37 +4,38 @@ from app.forms import LoginForm, CadastrarUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
-from datetime import timedelta
+from datetime import timedelta, date
 
 # HOME -------------------------------------------------
 @app.route('/')
 @app.route('/index')
 @login_required
-def index(id_barbeiro=1, dia=None):
-    dados = {}
+def index(id_barbeiro=1, data=date.today()):
     # Buscando todos os barbeiros
     barbeiros = busca_barbeiros()
-    # Busca quadro de horarios do barbeiro escolhido
-    # por padrão será o de id 1
-    quadro_de_horarios = gerar_quadro_horarios()
-    reservas = busca_reservas(id_barbeiro)
 
-    # Montando o dicionário com os dados que irão para a view
-    dados['barbeiros'] = barbeiros
-    dados['quadro_de_horarios'] = quadro_de_horarios
+    reservas = busca_reservas(data, id_barbeiro)
+
+    quadro_de_horarios = gerar_quadro_horarios(reservas)
+
+    dados = {
+        'barbeiros': barbeiros,
+        'quadro_de_horarios': quadro_de_horarios,
+        'barbeiro_escolhido': id_barbeiro
+    }
 
     return render_template('index.html', titulo="Home", dados=dados)
 
 def busca_barbeiros():
     dados = Barbeiro.query.all()
     return dados
-
-def busca_reservas(id_barbeiro):
+# Busca reservas do barbeiro escolhido na data passada
+def busca_reservas(data, id_barbeiro):
     dados = Reserva.query.\
-    filter_by(barbeiro_id=id_barbeiro).all()
+    filter_by(data=data, barbeiro_id=id_barbeiro).all()
     return dados
 
-def gerar_quadro_horarios():
+def gerar_quadro_horarios(reservas):
     horario = timedelta(hours=10)
     horario_limite = timedelta(hours=19)
     # Horário de almoço
@@ -48,12 +49,24 @@ def gerar_quadro_horarios():
     quadro_de_horarios = [str(horario)]
     
     while horario < horario_limite:
-        horario = horario + acrescimo
+        horario += acrescimo
         if horario in horarios_restritos:
             continue
         quadro_de_horarios.append(str(horario))
 
-    return quadro_de_horarios
+    quadro_horarios = quadro_horarios_vagos(quadro_de_horarios, reservas)
+
+    return quadro_horarios
+
+def quadro_horarios_vagos(quadro_de_horarios, reservas):
+    horarios_vagos = []
+    for horario in quadro_de_horarios:
+        for reserva in reservas:
+            if str(reserva.horario_inicio) != horario:
+                horarios_vagos.append(horario)
+
+    return horarios_vagos
+
 
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])

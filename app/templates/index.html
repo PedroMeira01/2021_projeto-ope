@@ -5,20 +5,26 @@
 	<div>
 		<h3>lista de barbeiros</h3>
 		<ul>
-			{% for b in dados['barbeiros'] %}
-				<li><a href="#" data-barbeiro="{{ b.id_barbeiro }}">{{ b.nome }}</a></li>
+			{% for barbeiro in dados['barbeiros'] %}
+				{%if barbeiro.id_barbeiro == dados['barbeiro_escolhido'] %}
+					<input type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" checked>
+				{% else %}
+					<input type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro">
+				{% endif %}
+				<label>{{ barbeiro.nome }}</label>
+				<br>
 			{% endfor %}
 		</ul>
 	</div>
 	<hr>
-	<input type="date">
+	<input type="date" onchange="">
 	<hr>
 	<div id="quadro-de-horarios">
 		<form action="">
 			{% for horario in dados['quadro_de_horarios'] %}
 			<div>
-				<label>{{ horario }}</label>
 				<input type="radio" value="horario" name="horario">
+				<label>{{ horario }}</label>
 			</div>
 			{% endfor %}
 		</form>

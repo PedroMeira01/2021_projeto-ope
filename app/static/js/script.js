@@ -1,0 +1,3 @@
+function carregaQuadroHorarios(barbeiro, dia) {
+
+}
