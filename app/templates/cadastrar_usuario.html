@@ -1,34 +1,84 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1> {{ titulo }} </h1>
-    <form action="" method="POST">
-        {{ form.hidden_tag() }}
-        
-        {{ form.nome.label }} <br>
-        {{ form.nome}} <br>
-        {% for error in form.nome.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        <hr>
-        {{ form.email.label }} <br>
-        {{ form.email }} <br>
-        {% for error in form.email.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        <hr>
-        {{ form.senha.label }} <br>
-        {{ form.senha }} <br>
-        {% for error in form.senha.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        <hr>
-        {{ form.confirma_senha.label }} <br>
-        {{ form.confirma_senha }} <br>
-        {% for error in form.confirma_senha.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-        <hr>
-        {{ form.cadastrar() }}
-    </form>
+
+<div class="container h-100">
+
+    <div class="row h-100 justify-content-center align-items-center">
+
+        <div class="col-6 h-75 bgc-black d-flex align-items-center pl-5">
+            <h1 class="c-white login__card--title pl-5">Crie uma <br> conta</h1>
+        </div>
+
+        <div class="col-6 h-75 bgc-white d-flex justify-content-center pt-5">
+
+            <div class="col-9 pt-5">
+                <h1 class="c-red login__form--title">Crie uma conta</h1>
+
+                <h3 class="c-gray">Bem vindo! Cadastre-se para ganhar descontos incriveís e oferta</h3>
+
+                <form action="" class="mt-5">
+                    {{ form.hidden_tag() }}
+
+                    <div class="col-12 px-0 d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <img width="14px" height="16px" src="../static/img/icon/usuario.png" alt="">
+                            {{ form.nome.label(for='nome-criar',class="login__card--label") }}
+                        </div>
+                        {{ form.nome(class='col-12 d-block login__card--input', id='nome')}}
+                        {% for error in form.nome.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 px-0 d-flex flex-column my-5">
+                        <div class="d-flex align-items-center mb-3">
+                            <img width="19px" height="15px" src="../static/img/icon/email.png" alt="">
+                            {{ form.email.label(for='nome-criar', class="login__card--label") }}
+                        </div>
+                        {{ form.email(class='col-12 d-block login__card--input', id='email')}}
+                        {% for error in form.email.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 px-0 d-flex flex-column mt-5 mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img width="14px" height="16px" src="../static/img/icon/senha.png" alt="">
+                            {{ form.senha.label(class="login__card--label", for="nome-criar") }}
+                        </div>
+                        {{ form.senha(class='col-12 d-block login__card--input', id='senha')}}
+                        {% for error in form.senha.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 px-0 d-flex flex-column mt-5 mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img width="14px" height="16px" src="../static/img/icon/senha.png" alt="">
+                            {{ form.confirmar_senha.label(class="login__card--label", for="nome-criar") }}
+                        </div>
+                        {{ form.confirmar_senha(class='col-12 d-block login__card--input', id='confirmar_senha')}}
+                        {% for error in form.confirmar_senha.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-center mt-5">
+                        {{ form.cadastrar(class="c-white bgc-red col-10 login__card--btn") }}
+                    </div>
+
+                    <div class="col-12 login__card--usuario d-flex justify-content-center align-items-baseline mt-5 ">
+                        <p class="c-gray mr-3">Já é usuário?</p>
+                        <a href="{{ url_for('cadastro') }}">Acessar Conta</a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}
