@@ -115,12 +115,8 @@ def cadastro():
         # Adiciona ao banco
         db.session.add(usuario)
         db.session.commit()
+
         flash('Sua conta foi criada com sucesso!')
         return redirect(url_for('login'))
-    return render_template('cadastrar_usuario.html', titulo="Crie sua conta: ", form=form)
-
-
-# Criei para fazer a página do login -------------------------------------------------
-@app.route('/teste')
-def teste():
-    return render_template('teste.html', titulo="tese")
+    
+    return render_template('teste.html', titulo="Crie sua conta", form=form)
