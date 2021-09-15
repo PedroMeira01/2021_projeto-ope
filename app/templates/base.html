@@ -18,7 +18,10 @@
 
     </head>
     <body>
-        <header></header>
+        <header>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Sair</a>
+        </header>
         <main class="main__login">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
