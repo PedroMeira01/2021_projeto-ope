@@ -11,6 +11,7 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 4 - CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -19,60 +20,60 @@
 <body>
     <main>
         <header></header>
-        <main style="height: 100vh; background-color: #6d6767;">
+        <main class="main__login">
 
             <div class="container h-100">
 
                 <div class="row h-100 justify-content-center align-items-center">
 
                     <div class="col-6 h-75 bgc-black d-flex align-items-center pl-5">
-                        <h1 class="c-white login__card--title">Crie uma <br> conta</h1>
+                        <h1 class="c-white login__card--title pl-5">Crie uma <br> conta</h1>
                     </div>
 
                     <div class="col-6 h-75 bgc-white d-flex justify-content-center pt-5">
 
-                        <div class="col-10">
+                        <div class="col-9 pt-5">
                             <h1 class="c-red login__form--title">Crie uma conta</h1>
 
-                            <h3 class="c-gray">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo aliquam qui harum maxime suscipit voluptatibus nisi in.</h3>
+                            <h3 class="c-gray">Bem vindo! Cadastre-se para ganhar descontos incriveís e oferta</h3>
                             
                             <form action="" class="mt-5">
                                 
                                 <div class="col-12 px-0 d-flex flex-column">
-                                    <div>
-                                        <img width="20px" src="https://getbootstrap.com/docs/4.0/assets/img/favicons/apple-touch-icon.png" alt="">
-                                        <label for="nome-criar">Nome de Usuário</label>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img width="14px" height="16px" src="../static/img/icon/usuario.png" alt="">
+                                        <label class="login__card--label" for="nome-criar">Nome de Usuário</label>
                                     </div>
-                                    <input class="col-12 d-block" type="text" name="nome-criar" id="nome-criar">
+                                    <input class="col-12 d-block login__card--input" type="text" name="nome-criar" id="nome-criar">
                                 </div>
 
-                                <div class="col-12 px-0 d-flex flex-column">
-                                    <div class="mt-4">
-                                        <img width="20px" src="https://getbootstrap.com/docs/4.0/assets/img/favicons/apple-touch-icon.png" alt="">
-                                        <label for="nome-criar">Nome de Usuário</label>
+                                <div class="col-12 px-0 d-flex flex-column my-5">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img width="19px" height="15px" src="../static/img/icon/email.png" alt="">
+                                        <label class="login__card--label" for="nome-criar">E-mail</label>
                                     </div>
-                                    <input class="col-12 d-block" type="text" name="nome-criar" id="nome-criar">
+                                    <input class="col-12 d-block login__card--input" type="email" name="nome-criar" id="nome-criar">
                                 </div>
 
-                                <div class="col-12 px-0 d-flex flex-column">
-                                    <div class="mt-4">
-                                        <img width="20px" src="https://getbootstrap.com/docs/4.0/assets/img/favicons/apple-touch-icon.png" alt="">
-                                        <label for="nome-criar">Nome de Usuário</label>
+                                <div class="col-12 px-0 d-flex flex-column mt-5 mb-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img width="14px" height="16px" src="../static/img/icon/senha.png" alt="">
+                                        <label class="login__card--label" for="nome-criar">Senha</label>
                                     </div>
-                                    <input class="col-12 d-block" type="text" name="nome-criar" id="nome-criar">
+                                    <input class="col-12 d-block login__card--input" type="text" name="nome-criar" id="nome-criar">
                                 </div>
 
-                                <div class="col-12 px-0 mt-4">
-                                    <input type="checkbox" name="" id="">
-                                    <label for="">Continuar logado</label>
-                                </div>
-
-                                <div class="col-12 d-flex justify-content-center mt-4">
-                                    <button class="c-white bgc-red col-10" type="submit" style="height: 20px;">Cadastrar</button>
+                                <div class="col-12 px-0">
+                                    <input type="checkbox" name="logado" id="logado">
+                                    <label class="login__card--labelCheck" for="logado">Continuar logado</label>
                                 </div>
 
                                 <div class="col-12 d-flex justify-content-center mt-5">
-                                    <p class="c-cinza">Já é usuário?</p>
+                                    <button class="c-white bgc-red col-10 login__card--btn" type="submit">Cadastrar</button>
+                                </div>
+
+                                <div class="col-12 login__card--usuario d-flex justify-content-center align-items-baseline mt-5 ">
+                                    <p class="c-gray mr-3">Já é usuário?</p>
                                     <a href="">Acessar Conta</a>
                                 </div>
 
