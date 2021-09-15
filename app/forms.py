@@ -26,7 +26,7 @@ class CadastrarUsuario(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()])
-    confirma_senha = PasswordField('Confirmação de senha', 
+    confirmar_senha = PasswordField('Confirmação de senha', 
         validators=[
             DataRequired(),
             EqualTo('senha')

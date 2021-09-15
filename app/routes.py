@@ -119,4 +119,4 @@ def cadastro():
         flash('Sua conta foi criada com sucesso!')
         return redirect(url_for('login'))
     
-    return render_template('teste.html', titulo="Crie sua conta", form=form)
+    return render_template('cadastrar_usuario.html', titulo="Crie sua conta", form=form)
