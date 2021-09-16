@@ -11,6 +11,7 @@ from datetime import timedelta, date
 @app.route('/index')
 @login_required
 def index(id_barbeiro=1, data=date.today()):
+    """ Tela de agendamento """
     # Buscando todos os barbeiros
     barbeiros = busca_barbeiros()
 
@@ -27,6 +28,7 @@ def index(id_barbeiro=1, data=date.today()):
     return render_template('index.html', titulo="Home", dados=dados)
 
 def busca_barbeiros():
+    """ Busca todos os barbeiros """
     dados = Barbeiro.query.all()
     return dados
 # Busca reservas do barbeiro escolhido na data passada
@@ -36,6 +38,9 @@ def busca_reservas(data, id_barbeiro):
     return dados
 
 def gerar_quadro_horarios(reservas):
+    """ Gera um quadro de horários completo
+    de acordo com o horário de funcionamento
+    do estabelecimento """
     horario = timedelta(hours=10)
     horario_limite = timedelta(hours=19)
     # Horário de almoço
@@ -59,18 +64,25 @@ def gerar_quadro_horarios(reservas):
     return quadro_horarios
 
 def quadro_horarios_vagos(quadro_de_horarios, reservas):
+    """ Formata o quadro de horários e mantém apenas os 
+    horários disponíveis """
     horarios_vagos = []
     for horario in quadro_de_horarios:
         for reserva in reservas:
             if str(reserva.horario_inicio) != horario:
                 horarios_vagos.append(horario)
 
-    return horarios_vagos
+    if horarios_vagos: 
+        return horarios_vagos
+    # Se não houverem horarios indisponíveis,
+    # retorna o quadro completo
+    return quadro_de_horarios
 
 
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """"."""
     # Verifica se o usuário já está logado
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -96,12 +108,14 @@ def login():
 
 @app.route('/logout')
 def logout():
+    """."""
     logout_user()
     return redirect(url_for('index'))
 
 # USUÁRIOS -----------------------------------------
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
+    """ Cadastro de usuários no site """
     # Verifica se o usuário já está logado
     if current_user.is_authenticated:
         return redirect(url_for('index'))
