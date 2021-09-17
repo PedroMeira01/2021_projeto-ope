@@ -19,8 +19,10 @@
     </head>
     <body>
         <header>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('logout') }}">Sair</a>
+            {% if not current_user.is_anonymous %}
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('logout') }}">Sair</a>
+            {% endif %}
         </header>
         <main>
             {% with messages = get_flashed_messages() %}
@@ -38,7 +40,8 @@
         <footer>
 
         </footer>
-            
+        
+        <script src="static/js/script.js"></script>
         <!-- Bootstrap 4 - JS/Jquery -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

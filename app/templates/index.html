@@ -7,9 +7,9 @@
 		<ul>
 			{% for barbeiro in dados['barbeiros'] %}
 				{%if barbeiro.id_barbeiro == dados['barbeiro_escolhido'] %}
-					<input type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" checked>
+					<input type="radio" class="barbeiro" value="{{barbeiro.id_barbeiro}}" name="barbeiro" oninput="buscaQuadroHorariosAtualizado()" checked>
 				{% else %}
-					<input type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro">
+					<input type="radio" class="barbeiro" value="{{barbeiro.id_barbeiro}}" name="barbeiro" oninput="buscaQuadroHorariosAtualizado()">
 				{% endif %}
 				<label>{{ barbeiro.nome }}</label>
 				<br>
@@ -17,7 +17,7 @@
 		</ul>
 	</div>
 	<hr>
-	<input type="date" onchange="">
+	<input type="date" id="calendario" onchange="buscaQuadroHorariosAtualizado()">
 	<hr>
 	<div id="quadro-de-horarios">
 		<form action="">

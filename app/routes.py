@@ -7,11 +7,13 @@ from werkzeug.urls import url_parse
 from datetime import timedelta, date
 
 # HOME -------------------------------------------------
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
-def index(id_barbeiro=1, data=date.today()):
+def index():
     """ Tela de agendamento """
+    # Verifica se há dados da req AJAX, se não, seta um valor padrão
+    id_barbeiro = request.args.get('id_barbeiro', 1)
+    data = request.args.get('data' , date.today())
     # Buscando todos os barbeiros
     barbeiros = busca_barbeiros()
 
