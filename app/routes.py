@@ -59,9 +59,8 @@ def gerar_quadro_horarios(reservas):
     
     while horario < horario_limite:
         horario += acrescimo
-        if horario in horarios_restritos:
-            continue
-        quadro_de_horarios.append(str(horario))
+        if horario not in horarios_restritos:
+            quadro_de_horarios.append(str(horario))
 
     quadro_horarios = quadro_horarios_vagos(quadro_de_horarios, reservas)
 
@@ -70,16 +69,13 @@ def gerar_quadro_horarios(reservas):
 def quadro_horarios_vagos(quadro_de_horarios, reservas):
     """ Formata o quadro de horários e mantém apenas os 
     horários disponíveis """
-    horarios_vagos = []
+    reservas = [str(r.horario_inicio) for r in reservas]
+
     for horario in quadro_de_horarios:
-        for reserva in reservas:
-            if str(reserva.horario_inicio) != horario:
-                horarios_vagos.append(horario)
-    # Se houverem horários marcados,
-    # retorna com os horários disponíveis
-    if horarios_vagos: 
-        return horarios_vagos
-    # Retorna quadro completo
+        if horario in reservas:
+            horario_reservado = quadro_de_horarios.index(horario)
+            quadro_de_horarios.pop(horario_reservado)
+
     return quadro_de_horarios
 
 
