@@ -5,20 +5,19 @@ from app.models import Usuario, Barbeiro, Servico, Reserva
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from datetime import timedelta, date
+import json
 
 # HOME -------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
     """ Tela de agendamento """
-    # Verifica se há dados da req AJAX, se não, seta um valor padrão
-    id_barbeiro = request.args.get('id_barbeiro', 1)
+    # Se não houver dados na request, seta um valor padrão
     data = request.args.get('data' , date.today())
-    # Buscando todos os barbeiros
+    id_barbeiro = request.args.get('id_barbeiro', 1)
+
     barbeiros = busca_barbeiros()
-
     reservas = busca_reservas(data, id_barbeiro)
-
     quadro_de_horarios = gerar_quadro_horarios(reservas)
 
     dados = {
@@ -26,6 +25,9 @@ def index():
         'quadro_de_horarios': quadro_de_horarios,
         'barbeiro_escolhido': id_barbeiro
     }
+    # Se houverem dados na request, retorna apenas o quadro de horários
+    if request.args:
+        return json.dumps(dados['quadro_de_horarios'])
 
     return render_template('index.html', titulo="Home", dados=dados)
 
@@ -73,11 +75,11 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
         for reserva in reservas:
             if str(reserva.horario_inicio) != horario:
                 horarios_vagos.append(horario)
-
+    # Se houverem horários marcados,
+    # retorna com os horários disponíveis
     if horarios_vagos: 
         return horarios_vagos
-    # Se não houverem horarios indisponíveis,
-    # retorna o quadro completo
+    # Retorna quadro completo
     return quadro_de_horarios
 
 
@@ -123,7 +125,7 @@ def cadastro():
         return redirect(url_for('index'))
 
     form = CadastrarUsuario()
-    # Se passar na validação de formulário faça a lógica abaixo
+
     if form.validate_on_submit():
         # Popula um objeto de Usuario
         usuario = Usuario(nome=form.nome.data,  email=form.email.data)

@@ -19,14 +19,14 @@
 	<hr>
 	<input type="date" id="calendario" onchange="buscaQuadroHorariosAtualizado()">
 	<hr>
-	<div id="quadro-de-horarios">
-		<form action="">
+	<form action="">
+		<div id="quadro-horarios">
 			{% for horario in dados['quadro_de_horarios'] %}
 			<div>
-				<input type="radio" value="horario" name="horario">
-				<label>{{ horario }}</label>
+				<input type="radio" value="{{ horario }}" name="horario">
+				<label>{{horario}}</label>
 			</div>
 			{% endfor %}
-		</form>
-	</div>
+		</div>
+	</form>
 {% endblock %}
