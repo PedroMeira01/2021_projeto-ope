@@ -1,37 +1,39 @@
-from flask import render_template, redirect, url_for, flash, request
-from flask_login.utils import encode_cookie
+from flask import render_template, redirect, url_for, flash, request, session
 from app import app, db
 from app.forms import LoginForm, CadastrarUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
-from flask_login import current_user, login_user, logout_user, login_required
-from werkzeug.urls import url_parse
 from datetime import datetime, timedelta, time, date
 import json
 
 # HOME -------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
-@login_required
 def index():
     """ Tela de agendamento """
-    # Se não houver dados na request, seta um valor padrão
-    data = request.args.get('data' , date.today())
-    id_barbeiro = request.args.get('id_barbeiro', 1)
+        # Verifica se o usuário já está logado
+    if 'id_usuario' in session:
+        # Se não houver dados na request, seta um valor padrão
+        data = request.args.get('data' , date.today())
+        id_barbeiro = request.args.get('id_barbeiro', 1)
 
-    barbeiros = busca_barbeiros()
-    reservas = busca_reservas(data, id_barbeiro)
-    quadro_de_horarios = gerar_quadro_horarios(reservas)
+        barbeiros = busca_barbeiros()
+        reservas = busca_reservas(data, id_barbeiro)
+        quadro_de_horarios = gerar_quadro_horarios(reservas)
 
-    dados = {
-        'barbeiros': barbeiros,
-        'quadro_de_horarios': quadro_de_horarios,
-        'barbeiro_escolhido': id_barbeiro
-    }
-    # Se houverem dados na request, retorna apenas o quadro de horários
-    if request.args:
-        return json.dumps(dados['quadro_de_horarios'])
+        dados = {
+            'barbeiros': barbeiros,
+            'quadro_de_horarios': quadro_de_horarios,
+            'barbeiro_escolhido': id_barbeiro
+        }
+        # Se houverem dados na request, retorna apenas o quadro de horários
+        if request.args:
+            return json.dumps(dados['quadro_de_horarios'])
 
-    return render_template('index.html', titulo="Home", dados=dados)
+        return render_template('index.html', titulo="Home", dados=dados)
+    # Se não estiver logado, redireciona para o login
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login'))
 
 def busca_barbeiros():
     """ Busca todos os barbeiros """
@@ -80,48 +82,41 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
     ]
     
     return quadro
-    
-
 
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """"."""
     # Verifica se o usuário já está logado
-    if current_user.is_authenticated:
+    if 'id_usuario' in session:
         return redirect(url_for('index'))
-    
+
     form = LoginForm()
-    # Verifica se passou nas validações do FlaskForm
     if form.validate_on_submit():
-        # Busca o usuário com o e-mail informado no banco
+        # Busca usuário com credenciais compátiveis a recebida
         usuario = Usuario.query.filter_by(email=form.email.data).first()
-        # Verifica se o usuário existe e se a senha está correta
+        
         if usuario is None or not usuario.checar_senha(form.senha.data):
             flash('E-mail ou senha inválido(s).')
             return redirect(url_for('login'))
-        # Realiza o login
-        login_user(usuario, remember=form.lembrar_me.data)
-        # Verifica se houve uma página requisitada restrita pelo login
-        pagina_requisitada = request.args.get('next')
-        if not pagina_requisitada or url_parse(pagina_requisitada).netloc != '':
-            pagina_requisitada = url_for('index')
-        return redirect(pagina_requisitada)
+        # Guarda o id do usuário na sessão
+        session['id_usuario'] = usuario.id
+        return redirect(url_for('index'))
 
     return render_template('login.html', titulo="Login", form=form)
 
 @app.route('/logout')
 def logout():
     """."""
-    logout_user()
-    return redirect(url_for('index'))
+    if 'id_usuario' in session:
+        session.clear()
+    return redirect(url_for('login'))
 
 # USUÁRIOS -----------------------------------------
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     """ Cadastro de usuários no site """
     # Verifica se o usuário já está logado
-    if current_user.is_authenticated:
+    if session['id_usuario']:
         return redirect(url_for('index'))
 
     form = CadastrarUsuario()
@@ -142,26 +137,30 @@ def cadastro():
 # RESERVAS -------------------------------------------------
 @app.route('/cadastrar_reserva', methods=['POST'])
 def cadastrar_reserva():
-    id_barbeiro = request.form['barbeiro']
-    data = datetime.strptime(request.form['data'], '%Y-%m-%d')
-    horario = request.form['horario']
-    # Convertendo a string para timedelta para determinar o horário fim
-    horario_inicio = datetime.strptime(horario, '%H:%M:%S')
-    horario_fim = horario_inicio + timedelta(minutes=29)
+    if 'id_usuario' in session:
+        id_barbeiro = request.form['barbeiro']
+        data = datetime.strptime(request.form['data'], '%Y-%m-%d')
+        horario = request.form['horario']
+        # Convertendo a string para timedelta para determinar o horário fim
+        horario_inicio = datetime.strptime(horario, '%H:%M:%S')
+        horario_fim = horario_inicio + timedelta(minutes=29)
 
-    reserva = Reserva(
-        horario_inicio=horario_inicio.time(),
-        horario_fim=horario_fim.time(),
-        data=data,
-        usuario_id=current_user.id,
-        barbeiro_id=id_barbeiro,
-        servico_id=1
-    )
+        reserva = Reserva(
+            horario_inicio=horario_inicio.time(),
+            horario_fim=horario_fim.time(),
+            data=data,
+            usuario_id=current_user.id,
+            barbeiro_id=id_barbeiro,
+            servico_id=1
+        )
 
-    db.session.add(reserva)
-    db.session.commit()
+        db.session.add(reserva)
+        db.session.commit()
 
-    flash('Sua reserva foi agendada com sucesso!\
-    Consulte as informações no seu histórico de agendamento.')
+        flash('Sua reserva foi agendada com sucesso!\
+        Consulte as informações no seu histórico de agendamento.')
 
-    return redirect(url_for('index'))
+        return redirect(url_for('index'))
+    # Se não estiver logado, redireciona para o login
+    else:
+        return redirect(url_for('login'))

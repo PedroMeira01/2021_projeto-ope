@@ -19,7 +19,7 @@
     </head>
     <body>
         <header>
-            {% if not current_user.is_anonymous %}
+            {% if session['id_usuario'] %}
                 <a href="{{ url_for('index') }}">Home</a>
                 <a href="{{ url_for('logout') }}">Sair</a>
             {% endif %}

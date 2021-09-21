@@ -1,13 +1,7 @@
-from app import db, login
-from datetime import datetime
+from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 
-@login.user_loader
-def load_usuario(id):
-    return Usuario.query.get(int(id))
-
-class Usuario(UserMixin, db.Model):
+class Usuario(db.Model):
     # Para que o FlaskLogin funcione, a PK do usuário deve ter o nome "id" apenas.
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), index=True)
