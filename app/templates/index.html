@@ -2,31 +2,32 @@
 
 {% block content %}
 	<h2>Agende seu horário</h2>
-	<div>
-		<h3>lista de barbeiros</h3>
-		<ul>
-			{% for barbeiro in dados['barbeiros'] %}
-				{%if barbeiro.id_barbeiro == dados['barbeiro_escolhido'] %}
-					<input type="radio" class="barbeiro" value="{{barbeiro.id_barbeiro}}" name="barbeiro" oninput="buscaQuadroHorariosAtualizado()" checked>
-				{% else %}
-					<input type="radio" class="barbeiro" value="{{barbeiro.id_barbeiro}}" name="barbeiro" oninput="buscaQuadroHorariosAtualizado()">
-				{% endif %}
-				<label>{{ barbeiro.nome }}</label>
-				<br>
-			{% endfor %}
-		</ul>
-	</div>
-	<hr>
-	<input type="date" id="calendario" onchange="buscaQuadroHorariosAtualizado()">
-	<hr>
-	<form action="">
+	<form action="{{ url_for('cadastrar_reserva') }}" method="POST">
+		<div>
+			<h3>lista de barbeiros</h3>
+			<ul>
+				{% for barbeiro in dados['barbeiros'] %}
+					{%if barbeiro.id_barbeiro == dados['barbeiro_escolhido'] %}
+						<input type="radio" class="barbeiro" value="{{barbeiro.id_barbeiro}}" name="barbeiro" oninput="buscaQuadroHorariosAtualizado()" checked required>
+					{% else %}
+						<input type="radio" class="barbeiro" value="{{barbeiro.id_barbeiro}}" name="barbeiro" oninput="buscaQuadroHorariosAtualizado()" required>
+					{% endif %}
+					<label>{{ barbeiro.nome }}</label>
+					<br>
+				{% endfor %}
+			</ul>
+		</div>
+		<hr>
+		<input type="date" id="calendario" name="data" onchange="buscaQuadroHorariosAtualizado()" required>
+		<hr>
 		<div id="quadro-horarios">
 			{% for horario in dados['quadro_de_horarios'] %}
 			<div>
-				<input type="radio" value="{{ horario }}" name="horario">
+				<input type="radio" value="{{ horario }}" name="horario" required>
 				<label>{{horario}}</label>
 			</div>
 			{% endfor %}
 		</div>
+		<input type="submit" value="Agendar">
 	</form>
 {% endblock %}

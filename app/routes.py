@@ -1,14 +1,16 @@
 from flask import render_template, redirect, url_for, flash, request
+from flask_login.utils import encode_cookie
 from app import app, db
 from app.forms import LoginForm, CadastrarUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
-from datetime import timedelta, date
+from datetime import datetime, timedelta, time, date
 import json
 
 # HOME -------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     """ Tela de agendamento """
@@ -71,12 +73,14 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
     horários disponíveis """
     reservas = [str(r.horario_inicio) for r in reservas]
 
-    for horario in quadro_de_horarios:
-        if horario in reservas:
-            horario_reservado = quadro_de_horarios.index(horario)
-            quadro_de_horarios.pop(horario_reservado)
-
-    return quadro_de_horarios
+    quadro = [
+        horario 
+        for horario in quadro_de_horarios
+        if horario not in reservas
+    ]
+    
+    return quadro
+    
 
 
 # AUTENTICAÇÃO  -----------------------------------------
@@ -134,3 +138,30 @@ def cadastro():
         return redirect(url_for('login'))
     
     return render_template('cadastrar_usuario.html', titulo="Crie sua conta", form=form)
+
+# RESERVAS -------------------------------------------------
+@app.route('/cadastrar_reserva', methods=['POST'])
+def cadastrar_reserva():
+    id_barbeiro = request.form['barbeiro']
+    data = datetime.strptime(request.form['data'], '%Y-%m-%d')
+    horario = request.form['horario']
+    # Convertendo a string para timedelta para determinar o horário fim
+    horario_inicio = datetime.strptime(horario, '%H:%M:%S')
+    horario_fim = horario_inicio + timedelta(minutes=29)
+
+    reserva = Reserva(
+        horario_inicio=horario_inicio.time(),
+        horario_fim=horario_fim.time(),
+        data=data,
+        usuario_id=current_user.id,
+        barbeiro_id=id_barbeiro,
+        servico_id=1
+    )
+
+    db.session.add(reserva)
+    db.session.commit()
+
+    flash('Sua reserva foi agendada com sucesso!\
+    Consulte as informações no seu histórico de agendamento.')
+
+    return redirect(url_for('index'))

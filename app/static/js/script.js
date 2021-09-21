@@ -1,12 +1,10 @@
-// Bloqueia datas retroativas a partir da data atual e seta data padrão
-const hoje = new Date().toISOString().split('T')[0];
+const hoje = bloqueiaDatasRetroativas();
 
 const calendario = document.querySelector("#calendario");
 calendario.setAttribute('min', hoje);
 calendario.value = hoje;
 
 const quadro_horarios = document.querySelector('#quadro-horarios');
-
 
 function buscaQuadroHorariosAtualizado() {
 	const xhr = new XMLHttpRequest();
@@ -59,4 +57,18 @@ function atualizaQuadroHorarios(dados) {
 		
 		quadro_horarios.appendChild(div)
 	}
+}
+
+function bloqueiaDatasRetroativas() {
+    	let hoje = new Date(),
+        mes = '' + (hoje.getMonth() + 1),
+        dia = '' + hoje.getDate(),
+        ano = hoje.getFullYear();
+
+    if (mes.length < 2) 
+        mes = '0' + mes;
+    if (dia.length < 2) 
+        dia = '0' + dia;
+
+    return [ano, mes, dia].join('-');
 }
