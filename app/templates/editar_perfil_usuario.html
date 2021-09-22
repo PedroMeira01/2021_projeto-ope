@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> Editar perfil </h1>
+    <div>
+        <form action="{{url_for('editar_perfil_usuario')}}">
+            {{ form.hidden_tag() }}
+            {{ form.nome.label() }} <br>
+            {{ form.nome() }} <br>
+            {% for error in form.nome.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.hidden_tag() }}
+            {{ form.email.label() }} <br>
+            {{ form.email() }} <br>
+            {% for error in form.email.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.hidden_tag() }}
+            {{ form.senha_atual.label() }} <br>
+            {{ form.senha_atual() }} <br>
+            {% for error in form.senha_atual.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.hidden_tag() }}
+            {{ form.nova_senha.label() }} <br>
+            {{ form.nova_senha() }} <br>
+            {% for error in form.nova_senha.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.hidden_tag() }}
+            {{ form.confirmar_senha.label() }} <br>
+            {{ form.confirmar_senha() }} <br>
+            {% for error in form.confirmar_senha.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.editar() }}
+        </form>
+    </div>
+{% endblock %}

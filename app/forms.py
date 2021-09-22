@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app.models import Usuario
+from flask import session
 
 # Para os formulários do site, usamos a extensão FlaskWTF
 # que é uma parte do pacote WTForms. Os formulários do site
@@ -38,3 +39,23 @@ class CadastrarUsuario(FlaskForm):
         usuario = Usuario.query.filter_by(email=email.data).first()
         if usuario is not None:
             raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
+
+class EditarPerfilUsuario(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    senha_atual = PasswordField('Senha atual', validators=[DataRequired()])
+    nova_senha = PasswordField('Nova senha', validators=[DataRequired()])
+    confirmar_senha = PasswordField('Confirmar nova senha', 
+        validators=[
+            DataRequired(),
+            EqualTo('senha_atual')
+        ]
+    )
+    editar = SubmitField('Editar')
+
+    def validate_email(self, email):
+        usuario = Usuario.query.filter_by(email=email).first()
+        if usuario.id != session['id_usuario']:
+            raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
+
+

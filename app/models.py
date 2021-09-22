@@ -26,7 +26,7 @@ class Barbeiro(db.Model):
     email = db.Column(db.String(100), index=True, unique=True)
     senha = db.Column(db.String(128))
 
-    reservas = db.relationship('Reserva', backref='barbeiro', lazy='dynamic')
+    atendimentos = db.relationship('Reserva', backref='barbeiro', lazy='dynamic')
 
     def __repr__(self):
         return f"<Barbeiro {self.nome}>"
@@ -42,7 +42,7 @@ class Servico(db.Model):
     nome = db.Column(db.String(100))
     valor = db.Column(db.Float)
 
-    reservas = db.relationship('Reserva', backref='servico', lazy='dynamic')
+    servico_executado = db.relationship('Reserva', backref='servico', lazy='dynamic')
 
     def __repr__(self):
         return f"<Servico {self.nome}>"

@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from app import app, db
-from app.forms import LoginForm, CadastrarUsuario
+from app.forms import EditarPerfilUsuario, LoginForm, CadastrarUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
 from datetime import datetime, timedelta, time, date
 import json
@@ -83,6 +83,33 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
     
     return quadro
 
+@app.route('/editar_perfil_usuario/<id>', methods=['GET', 'POST'])
+def editar_perfil_usuario(id):
+    if 'id_usuario' in session:
+
+        form = EditarPerfilUsuario()
+        usuario = Usuario.query.filter_by(id=id).first()
+        if form.validate_on_submit():
+            usuario.nome = form.nome.data
+            usuario.email = form.email.data
+
+            db.session.add(usuario)
+            db.session.commit()
+            
+            flash('Suas informações foram editadas com sucesso!')
+
+            return redirect(url_for('editar_perfil_usuario'))
+
+        elif request.method == 'GET':
+            form.nome.data = usuario.nome
+            form.email.data = usuario.email
+    
+        return render_template('editar_perfil_usuario.html', titulo='Editar perfil', form=form)
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login'))
+    
+
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -144,16 +171,17 @@ def cadastrar_reserva():
         # Convertendo a string para timedelta para determinar o horário fim
         horario_inicio = datetime.strptime(horario, '%H:%M:%S')
         horario_fim = horario_inicio + timedelta(minutes=29)
+        usuario_id = session['id_usuario']
 
         reserva = Reserva(
             horario_inicio=horario_inicio.time(),
             horario_fim=horario_fim.time(),
             data=data,
-            usuario_id=current_user.id,
+            usuario_id=usuario_id,
             barbeiro_id=id_barbeiro,
             servico_id=1
         )
-
+        # FALTA FAZER A VALIDAÇÃO DE RESERVA JÁ EXISTENTE
         db.session.add(reserva)
         db.session.commit()
 
@@ -164,3 +192,10 @@ def cadastrar_reserva():
     # Se não estiver logado, redireciona para o login
     else:
         return redirect(url_for('login'))
+
+@app.route('/historico_reservas')
+def historico_reservas():
+    """Lista todas as reservas de um usuário"""
+    usuario_id = session['id_usuario']
+    reservas = Reserva.query.filter_by(usuario_id=usuario_id).all()
+    return render_template('historico_reservas.html', titulo='Histórico de Reservas', dados=reservas)
