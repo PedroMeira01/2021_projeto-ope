@@ -173,25 +173,35 @@ def cadastrar_reserva():
         horario_fim = horario_inicio + timedelta(minutes=29)
         usuario_id = session['id_usuario']
 
-        reserva = Reserva(
-            horario_inicio=horario_inicio.time(),
-            horario_fim=horario_fim.time(),
-            data=data,
-            usuario_id=usuario_id,
-            barbeiro_id=id_barbeiro,
-            servico_id=1
-        )
-        # FALTA FAZER A VALIDAÇÃO DE RESERVA JÁ EXISTENTE
-        db.session.add(reserva)
-        db.session.commit()
+        existe_reserva = verifica_se_existe_reserva(horario_inicio, id_barbeiro)
 
-        flash('Sua reserva foi agendada com sucesso!\
-        Consulte as informações no seu histórico de agendamento.')
+        if not existe_reserva:
+            reserva = Reserva(
+                horario_inicio=horario_inicio.time(),
+                horario_fim=horario_fim.time(),
+                data=data,
+                usuario_id=usuario_id,
+                barbeiro_id=id_barbeiro,
+                servico_id=1
+            )
+
+            db.session.add(reserva)
+            db.session.commit()
+
+            flash('Sua reserva foi agendada com sucesso!\
+            Consulte as informações no seu histórico de agendamento.')
+        else:
+            flash('Já existe uma reserva marcada neste horário, por favor, escolha outro horário.')
 
         return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
         return redirect(url_for('login'))
+
+def verifica_se_existe_reserva(horario, barbeiro):
+    reserva = Reserva.query.filter_by(horario_inicio=horario,\
+         barbeiro_id=barbeiro).first()
+    return reserva
 
 @app.route('/historico_reservas')
 def historico_reservas():
