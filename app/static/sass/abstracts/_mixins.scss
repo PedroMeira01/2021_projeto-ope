@@ -45,3 +45,17 @@ $black-full: #000;
 @include defineColor('white', $white);
 @include defineColor('black--full', $black-full);
 @include defineColor('gray', $gray);
+
+
+// Medias Queries
+@mixin respond($breakpoint) {
+  @if $breakpoint == phone {
+      @media only screen and (max-width: 600px) { @content } ;   
+  }
+  @if $breakpoint == notebook {
+      @media only screen and (max-width: 1200px) { @content } ; 
+  }
+  @if $breakpoint == big-desktop {
+      @media only screen and (min-width: 1800px) { @content } ; 
+  }
+}

@@ -4,4 +4,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   padding: 160px 0px 80px;
+
+    @include respond(big-desktop) {
+      height: 100vh;
+  }
 }
