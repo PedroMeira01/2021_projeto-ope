@@ -82,32 +82,6 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
     ]
     
     return quadro
-
-@app.route('/editar_perfil_usuario/<id>', methods=['GET', 'POST'])
-def editar_perfil_usuario(id):
-    if 'id_usuario' in session:
-
-        form = EditarPerfilUsuario()
-        usuario = Usuario.query.filter_by(id=id).first()
-        if form.validate_on_submit():
-            usuario.nome = form.nome.data
-            usuario.email = form.email.data
-
-            db.session.add(usuario)
-            db.session.commit()
-            
-            flash('Suas informações foram editadas com sucesso!')
-
-            return redirect(url_for('editar_perfil_usuario'))
-
-        elif request.method == 'GET':
-            form.nome.data = usuario.nome
-            form.email.data = usuario.email
-    
-        return render_template('editar_perfil_usuario.html', titulo='Editar perfil', form=form)
-    else:
-        flash('Por favor, faça o login para acessar esta página.')
-        return redirect(url_for('login'))
     
 
 # AUTENTICAÇÃO  -----------------------------------------
@@ -160,6 +134,35 @@ def cadastro():
         return redirect(url_for('login'))
     
     return render_template('cadastrar_usuario.html', titulo="Crie sua conta", form=form)
+
+@app.route('/editar_perfil/<id>', methods=['GET', 'POST'])
+def editar_perfil(id):
+    if 'id_usuario' in session:
+
+        usuario = Usuario.query.filter_by(id=id).first()
+        form = EditarPerfilUsuario(usuario.email)
+
+        if form.validate_on_submit():
+            usuario.nome = form.nome.data
+            usuario.email = form.email.data
+            if form.nova_senha:
+                usuario.criptografar_senha(form.nova_senha.data)
+
+            db.session.add(usuario)
+            db.session.commit()
+            
+            flash('Suas informações foram editadas com sucesso!')
+
+            return redirect(url_for('editar_perfil', id=id))
+
+        elif request.method == 'GET':
+            form.nome.data = usuario.nome
+            form.email.data = usuario.email
+
+        return render_template('editar_perfil_usuario.html', titulo='Editar perfil', form=form)
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login'))
 
 # RESERVAS -------------------------------------------------
 @app.route('/cadastrar_reserva', methods=['POST'])

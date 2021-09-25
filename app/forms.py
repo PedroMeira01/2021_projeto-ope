@@ -48,14 +48,24 @@ class EditarPerfilUsuario(FlaskForm):
     confirmar_senha = PasswordField('Confirmar nova senha', 
         validators=[
             DataRequired(),
-            EqualTo('senha_atual')
+            EqualTo('nova_senha')
         ]
     )
     editar = SubmitField('Editar')
 
+    def __init__(self, email_original, *args, **kwargs):
+        super(EditarPerfilUsuario, self).__init__(*args, **kwargs)
+        self.email_original = email_original
+
     def validate_email(self, email):
-        usuario = Usuario.query.filter_by(email=email).first()
-        if usuario.id != session['id_usuario']:
-            raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
+        usuario = Usuario.query.filter_by(email=email.data).first()
+        if usuario:
+            if usuario.id != session['id_usuario']:
+                raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
+    
+    def validate_senha_atual(self, senha_atual):
+        usuario = Usuario.query.filter_by(email=self.email_original).first()
+        if not usuario.checar_senha(senha_atual.data):
+            raise ValidationError('A senha atual está incorreta.')
 
 
