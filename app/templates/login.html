@@ -5,15 +5,15 @@
 <section class="login d-flex align-items-center">
     <div class="container">
 
-        <div class="row">
+        <div class="row u-row-login">
 
             <div class="col-xl-6 bgc-black d-none d-xl-flex align-items-center pl-5">
                 <h1 class="c-white login__card--title pl-5">Acesse <br>sua conta</h1>
             </div>
 
-            <div class="col-xl-6 bgc-white d-flex justify-content-center py-5">
+            <div class="col-xl-6 bgc-white d-flex justify-content-center align-items-center">
 
-                <div class="col-11 col-xl-9 pt-5">
+                <div class="col-11 col-xl-9">
                     <h1 class="c-red login__form--title">Login</h1>
 
                     <h3 class="c-gray">Bem vindo! Faça login para ganhar descontos incriveís e oferta</h3>
@@ -43,10 +43,23 @@
                             {% endfor %}
                         </div>
 
+                        <div class="col-12 px-0 d-flex align-items-baseline mt-5 mb-4">
+                            <input type="checkbox" name="logado" id="logado">
+                            <label class="c-gray ml-4" for="logado">Continuar Logado</label>
+                        </div>
+
                         <div class="col-12 d-flex justify-content-center mt-5">
                             {{ form.entrar(class="c-white bgc-red col-10 login__card--btn") }}
                         </div>
 
+                        <div class="col-12 login__card--usuario px-0 d-flex align-items-baseline justify-content-center mt-5">
+                            <p class="c-gray mr-3">Novo usuário?</p>
+                            <a href="">Crie uma conta</a>
+                        </div>
+
+                        <div class="col-12 login__card--usuario px-0 d-flex align-items-baseline justify-content-center mt-3">
+                            <a href="">Esqueceu a senha?</a>
+                        </div>
                     </form>
                 </div>
 

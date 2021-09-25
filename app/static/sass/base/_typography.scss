@@ -14,6 +14,7 @@ body {
   &__form {
     &--title {
       font-size: 5rem;
+      font-weight: 600;
 
       @include respond(phone) {
         font-size: 3.5rem;
