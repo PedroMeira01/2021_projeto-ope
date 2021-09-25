@@ -143,7 +143,7 @@ def logout():
 def cadastro():
     """ Cadastro de usuários no site """
     # Verifica se o usuário já está logado
-    if session['id_usuario']:
+    if 'id_usuario' in session:
         return redirect(url_for('index'))
 
     form = CadastrarUsuario()
