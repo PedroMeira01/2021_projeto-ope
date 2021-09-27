@@ -23,3 +23,15 @@ body {
   }
 
 }
+
+.section {
+
+  &__title {
+    font-size: 4.5rem;
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    font-size: 1.6rem;
+  }
+}

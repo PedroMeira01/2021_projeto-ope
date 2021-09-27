@@ -212,3 +212,8 @@ def historico_reservas():
     usuario_id = session['id_usuario']
     reservas = Reserva.query.filter_by(usuario_id=usuario_id).all()
     return render_template('historico_reservas.html', titulo='Histórico de Reservas', dados=reservas)
+
+
+@app.route('/agendamento')
+def agendamento():
+    return render_template('agendamento.html', titulo='agendamento')
