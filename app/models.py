@@ -70,11 +70,5 @@ class Reserva(db.Model):
                     Servico.nome.label('servico')
                 )\
                 .filter(Reserva.usuario_id == usuario_id).all()
-        
-        return reservas
 
-    # SELECT * FROM reservas r
-    # INNER JOIN usuario u ON u.id = r.usuario_id
-    # INNER JOIN barbeiro b ON b.id_barbeiro = r.barbeiro_id
-    # INNER JOIN servico s ON s.id_servico = r.servico_id
-    # WHERE r.usuario_id = 1 
+        return reservas

@@ -41,7 +41,7 @@ class CadastrarUsuario(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
 
 class EditarPerfilUsuario(FlaskForm):
-    nome = StringField('Nome', validators=[DataRequired()])
+    nome = StringField('Nome de usuário', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha_atual = PasswordField('Senha atual', validators=[DataRequired()])
     nova_senha = PasswordField('Nova senha', validators=[DataRequired()])

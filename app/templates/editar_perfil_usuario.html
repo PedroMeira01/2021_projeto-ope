@@ -1,37 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1> Editar perfil </h1>
-    <div>
+    <section id="profile">
+      <h2 class="internal-title">Seu perfil</h2>
+    <div class="profile-form-area">
+        <h3> Editar informações pessoais </h3>
         <form action="{{ url_for('editar_perfil', id=session['id_usuario']) }}" method="POST">
             {{ form.hidden_tag() }}
 
-            {{ form.nome.label() }} <br>
-            {{ form.nome() }} <br>
+            {{ form.nome.label() }} 
+            {{ form.nome() }} 
             {% for error in form.nome.errors %}
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <hr>
-            {{ form.email.label() }} <br>
-            {{ form.email() }} <br>
+            {{ form.email.label() }} 
+            {{ form.email() }} 
             {% for error in form.email.errors %}
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <hr>
-            {{ form.senha_atual.label() }} <br>
-            {{ form.senha_atual() }} <br>
+            {{ form.senha_atual.label() }} 
+            {{ form.senha_atual() }} 
             {% for error in form.senha_atual.errors %}
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <hr>
-            {{ form.nova_senha.label() }} <br>
-            {{ form.nova_senha() }} <br>
+            {{ form.nova_senha.label() }} 
+            {{ form.nova_senha() }} 
             {% for error in form.nova_senha.errors %}
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <hr>
-            {{ form.confirmar_senha.label() }} <br>
-            {{ form.confirmar_senha() }} <br>
+            {{ form.confirmar_senha.label() }} 
+            {{ form.confirmar_senha() }} 
             {% for error in form.confirmar_senha.errors %}
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
@@ -39,4 +41,5 @@
             {{ form.editar() }}
         </form>
     </div>
+    </section>
 {% endblock %}
