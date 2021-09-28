@@ -194,14 +194,15 @@ def cadastrar_reserva():
             flash('Sua reserva foi agendada com sucesso!\
             Consulte as informações no seu histórico de agendamento.')
         else:
-            flash('Já existe uma reserva marcada neste horário, por favor, escolha outro horário.')
+            flash('Já existe uma reserva marcada neste horário,\
+                 por favor, escolha outro horário.')
 
         return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
         return redirect(url_for('login'))
 
-def verifica_se_existe_reserva(horario, barbeiro):
+def verifica_se_existe_reserva (horario, barbeiro):
     reserva = Reserva.query.filter_by(horario_inicio=horario,\
          barbeiro_id=barbeiro).first()
     return reserva
@@ -210,8 +211,15 @@ def verifica_se_existe_reserva(horario, barbeiro):
 def historico_reservas():
     """Lista todas as reservas de um usuário"""
     usuario_id = session['id_usuario']
-    reservas = Reserva.query.filter_by(usuario_id=usuario_id).all()
-    return render_template('historico_reservas.html', titulo='Histórico de Reservas', dados=reservas)
+
+    reservas = Reserva()
+    reservas = reservas.reservas_por_cliente(usuario_id)
+
+    return render_template(
+            'historico_reservas.html', 
+            titulo='Histórico de Reservas', 
+            reservas=reservas
+        )
 
 
 @app.route('/agendamento')

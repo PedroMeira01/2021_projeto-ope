@@ -58,3 +58,23 @@ class Reserva(db.Model):
     
     def __repr__(self):
         return f"<Servico código da reserva: {self.id_reserva}>"
+
+    def reservas_por_cliente(self, usuario_id):
+        reservas = Reserva.query\
+                .join(Usuario, Reserva.usuario_id==Usuario.id)\
+                .join(Barbeiro, Reserva.barbeiro_id==Barbeiro.id_barbeiro)\
+                .join(Servico, Reserva.servico_id==Servico.id_servico)\
+                .add_columns( 
+                    Reserva.data, 
+                    Barbeiro.nome.label('barbeiro'), 
+                    Servico.nome.label('servico')
+                )\
+                .filter(Reserva.usuario_id == usuario_id).all()
+        
+        return reservas
+
+    # SELECT * FROM reservas r
+    # INNER JOIN usuario u ON u.id = r.usuario_id
+    # INNER JOIN barbeiro b ON b.id_barbeiro = r.barbeiro_id
+    # INNER JOIN servico s ON s.id_servico = r.servico_id
+    # WHERE r.usuario_id = 1 

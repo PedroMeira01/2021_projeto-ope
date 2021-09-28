@@ -2,6 +2,12 @@
 
 {% block content %}
     <h1> Histórico de reservas! </h1>
+    {% for reserva in reservas %}
     <div>
+         <span>{{ reserva.data }} </span>
+         <span>{{ reserva.barbeiro }} </span>
+         <span>{{ reserva.servico }} </span>
+        
     </div>
+    {% endfor %}
 {% endblock %}
