@@ -1,0 +1,21 @@
+.menu {
+
+  &__side {
+    position: absolute;
+    width: 120px;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    padding: 40px 0px;
+    background-color: $brown2;
+    color: $white;
+    text-align: center;
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+}

@@ -2,6 +2,40 @@
 
 {% block content %}
 
+<nav class="menu__side">
+  <ul>
+    <a href="">
+      <li>
+        <img src="../static/img/icon/usuario-branco.png" alt="">
+        <p class="d-block c-white mt-3">Perfil</p>
+      </li>
+    </a>
+
+    <a href="">
+      <li class="mt-5">
+        <img src="../static/img/icon/calendario.png" alt="">
+        <p class="d-block c-white mt-3">Agendar</p>
+      </li>
+    </a>
+
+    <a href="">
+      <li class="mt-5">
+        <img src="../static/img/icon/historico.png" alt="">
+        <p class="d-block c-white mt-3">Histórico</p>
+      </li>
+    </a>
+
+    <a href="">
+      <li class="mt-5">
+        <img src="../static/img/icon/sair.png" alt="">
+        <p class="d-block c-white mt-3">Sair</p>
+      </li>
+    </a>
+
+  </ul>
+
+</nav>
+
 <section style="height: 100vh; padding: 160px 0px 80px;">
   <div class="container">
 
@@ -50,7 +84,7 @@
 
         <div class="col-6 ">
 
-          <div class="col-12 d-flex">
+          <div class="col-12 d-flex pr-5">
 
             <div class="col-3 bgc-brown schedule__time">
 
@@ -110,7 +144,7 @@
 
           </div>
 
-          <div class="col-12 d-flex mt-3">
+          <div class="col-12 d-flex mt-3 pr-5">
 
             <div class="col-3 bgc-brown schedule__time">
 
@@ -170,7 +204,7 @@
 
           </div>
 
-          <div class="col-12 d-flex mt-3">
+          <div class="col-12 d-flex mt-3 pr-5">
 
             <div class="col-3 bgc-brown schedule__time">
 
@@ -230,7 +264,7 @@
 
           </div>
 
-          <div class="col-12 d-flex mt-3">
+          <div class="col-12 d-flex mt-3 pr-5">
 
             <div class="col-3 bgc-brown schedule__time">
 
@@ -288,6 +322,28 @@
 
             </div>
 
+          </div>
+
+          <div class="col-12 d-flex mt-5 pr-0">
+
+            <div class="col-6 px-0">
+
+              <div class="col-12 px-0">
+                <label class="schedule__service--label" for="serviço">Serviço:</label>
+              </div>
+
+              <select class="w-100 schedule__service" name="serviço" id="serviço">
+                <option value="">Selecione</option>
+                <option value="">Corte de Cabelo</option>
+                <option value="">Barba</option>
+              </select>
+
+            </div>
+
+            <div class="col-6 d-flex justify-content-end align-items-end pr-0">
+              <button class="bgc-red2 btn__pattern" type="submit">Confirmar</button>
+            </div>
+            
           </div>
 
         </div>

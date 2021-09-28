@@ -1,11 +1,16 @@
 // Definindo cores em classes
 $brown: #150303;
+$brown2: #1c0808;
+
 
 $red: #fb0000;
+$red2: #f40000;
 
 $black: #0e0e0e;
 
 $gray: #a4a4a4;
+
+$gray2: #cecece;
 
 $color-tertiary: #2d2d2d;
 
@@ -41,6 +46,7 @@ $black-full: #000;
 
 @include defineColor('brown', $brown);
 @include defineColor('red', $red);
+@include defineColor('red2', $red2);
 @include defineColor('black', $black);
 @include defineColor('white', $white);
 @include defineColor('black--full', $black-full);

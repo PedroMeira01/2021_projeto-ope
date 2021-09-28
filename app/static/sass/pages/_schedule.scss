@@ -35,6 +35,20 @@
     border-radius: 5px;
   }
 
+  &__service {
+    height: 30px;
+    border: 1px solid $gray2;
+    border-radius: 5px;
+    font-size: 14px;
+    padding-left: 5px;
+
+    &--label {
+      font-size: 18px;
+      font-weight: 600;
+      color: $brown;
+    }
+  }
+
 }
 
 .form {

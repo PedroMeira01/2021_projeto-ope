@@ -1,0 +1,15 @@
+.btn__pattern {
+  height: fit-content;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 35px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: $white;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
