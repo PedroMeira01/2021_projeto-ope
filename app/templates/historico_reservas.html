@@ -1,13 +1,132 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1> Histórico de reservas! </h1>
-    {% for reserva in reservas %}
-    <div>
-         <span>{{ reserva.data }} </span>
-         <span>{{ reserva.barbeiro }} </span>
-         <span>{{ reserva.servico }} </span>
-        
+<nav class="menu__side">
+    <ul>
+        <a href="">
+            <li>
+                <img src="../static/img/icon/usuario-branco.png" alt="">
+                <p class="d-block c-white mt-3">Perfil</p>
+            </li>
+        </a>
+
+        <a href="">
+            <li class="mt-5">
+                <img src="../static/img/icon/calendario.png" alt="">
+                <p class="d-block c-white mt-3">Agendar</p>
+            </li>
+        </a>
+
+        <a href="">
+            <li class="mt-5">
+                <img src="../static/img/icon/historico.png" alt="">
+                <p class="d-block c-white mt-3">Histórico</p>
+            </li>
+        </a>
+
+        <a href="">
+            <li class="mt-5">
+                <img src="../static/img/icon/sair.png" alt="">
+                <p class="d-block c-white mt-3">Sair</p>
+            </li>
+        </a>
+
+    </ul>
+
+</nav>
+
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 px-0">
+                <h1 class="c-brown section__title">Histórico de Agendamento</h1>
+                <p class="c-brown section__subtitle">Aqui você encontra todos os agendamentos</p>
+            </div>
+
+            <div class="col-12 historic__card">
+
+                <div class="col-12 px-0 d-flex">
+
+                    <div class="col-3">
+                        <select class="w-100" name="" id="">
+                            <option value="" disabled>Filtrar Status:</option>
+                            <option value="">Ver todos</option>
+                            <option value="">Cancelados</option>
+                            <option value="">Concluídos</option>
+                            <option value="">Pendente</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-3">
+                        <select class="w-100" name="" id="">
+                            <option value="" disabled>Filtrar Status:</option>
+                            <option value="">Ver todos</option>
+                            <option value="">Cancelados</option>
+                            <option value="">Concluídos</option>
+                            <option value="">Pendente</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <input class="w-100" type="date" name="" id="">
+                    </div>
+                    <div class="col-3">
+                        <button class="bgc-red2 btn__pattern" type="submit">Limpar</button>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex">
+                    <h3>Mostrar</h3>
+                    <input type="number" name="" id="">
+                    <label for="">agendamentos</label>
+                </div>
+
+                <div class="col-12 d-flex">
+                    
+                    <div class="col-6 d-flex pl-0 historic__status">
+
+                        <div class="col-2 bgc-red">
+                            <h2 class="c-white">15 Nov</h2>
+                            <h3 class="c-white">15:00</h3>
+                        </div>
+
+                        <div class="col-10">
+                            <h2>Barbeiro</h2>
+                            <p>Serviço: Corte de Cabelo</p>
+                            <p class="c-red">cancelado</p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-6 d-flex pr-0 historic__status">
+
+                        <div class="col-2 bgc-red">
+                            <h2 class="c-white">15 Nov</h2>
+                            <h3 class="c-white">15:00</h3>
+                        </div>
+
+                        <div class="col-10">
+                            <h2>Barbeiro</h2>
+                            <p>Serviço: Corte de Cabelo</p>
+                            <p class="c-red">cancelado</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
-    {% endfor %}
+</section>
+
+<!-- <h1> Histórico de reservas! </h1>
+{% for reserva in reservas %}
+<div>
+    <span>{{ reserva.data }} </span>
+    <span>{{ reserva.barbeiro }} </span>
+    <span>{{ reserva.servico }} </span>
+
+</div> -->
+{% endfor %}
 {% endblock %}
