@@ -2,41 +2,7 @@
 
 {% block content %}
 
-	<nav class="menu__side">
-		<ul>
-		<a href="">
-			<li>
-			<img src="../static/img/icon/usuario-branco.png" alt="">
-			<p class="d-block c-white mt-3">Perfil</p>
-			</li>
-		</a>
-	
-		<a href="">
-			<li class="mt-5">
-			<img src="../static/img/icon/calendario.png" alt="">
-			<p class="d-block c-white mt-3">Agendar</p>
-			</li>
-		</a>
-	
-		<a href="">
-			<li class="mt-5">
-			<img src="../static/img/icon/historico.png" alt="">
-			<p class="d-block c-white mt-3">Histórico</p>
-			</li>
-		</a>
-	
-		<a href="">
-			<li class="mt-5">
-			<img src="../static/img/icon/sair.png" alt="">
-			<p class="d-block c-white mt-3">Sair</p>
-			</li>
-		</a>
-	
-		</ul>
-	
-	</nav>
-
-	<section style="height: 100vh; padding: 160px 0px 80px;">
+	<section style="height: 100vh; padding: 70px 0px 80px;">
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-12 d-flex justify-content-center">
@@ -53,13 +19,13 @@
 								{% for barbeiro in dados['barbeiros'] %}
 									{%if barbeiro.id_barbeiro == dados['barbeiro_escolhido'] %}
 										<li class="mb-4">
-											<input class="schedule__barber--input" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" checked required>
-											<label class="c-brown schedule__barber" for="barbeiro1">{{ barbeiro.nome }}</label>
+											<input class="schedule__barber--input barbeiro" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" checked required>
+											<label class="c-brown schedule__barber" for="barbeiro{{barbeiro.id_barbeiro}}">{{ barbeiro.nome }}</label>
 										</li>
 									{% else %}
 									<li class="mb-4">
-										<input class="schedule__barber--input" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" required>
-										<label class="c-brown schedule__barber" for="barbeiro1">{{ barbeiro.nome }}</label>
+										<input class="schedule__barber--input barbeiro" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" required>
+										<label class="c-brown schedule__barber" for="barbeiro{{barbeiro.id_barbeiro}}">{{ barbeiro.nome }}</label>
 									</li>
 									{% endif %}
 
@@ -72,17 +38,19 @@
 					</div>
 			
 					<div class="col-6 ">
-						<div class="schedule-area">
+						<div id="quadro-horarios" class="schedule-area">
+                            {% set x = 1 %}
 							{% for horario in dados['quadro_de_horarios'] %}
 							<div class="col-3 bgc-brown schedule__time">
 								<div class="form__radio-group">
-									<input type="radio" class="form__radio-input" id="barbeiro_horario1" name="size" value="{{horario}}">
-									<label for="barbeiro_horario1" class="form__radio-label">
+									<input type="radio" id="hour{{horario.index}}" class="form__radio-input" name="hour" value="{{horario}}">
+									<label class="form__radio-label" for="hour{{horario.index}}">
 										<span class="form__radio-button"></span>
 										{{horario}}
 									</label>
 								</div>
 							</div>
+                            {% set x = x + 1 %}
 							{% endfor %}
 						</div>
 			

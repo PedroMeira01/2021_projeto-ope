@@ -18,12 +18,6 @@
     </head>
     <body>
         <header>
-            {% if session['id_usuario'] %}
-                <a href="{{ url_for('index') }}">Home</a>
-                <a href="{{ url_for('editar_perfil', id=session['id_usuario']) }}">Editar perfil</a>
-                <a href="{{ url_for('historico_reservas') }}">Histórico de agendamentos</a>
-                <a href="{{ url_for('logout') }}">Sair</a>
-            {% endif %}
         </header>
         <main>
             {% with messages = get_flashed_messages() %}
@@ -35,11 +29,45 @@
                 </ul>
                 {% endif %}
             {% endwith %}
+            
+            <!-- Menu lateral -->
+            {% if session['id_usuario'] %}
+            <nav class="menu__side">
+                <ul>
+                    <a href="{{ url_for('index') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/calendario.png" alt="">
+                            <p class="d-block c-white mt-3">Agendar</p>
+                        </li>
+                    </a>
+                
+                    <a href="{{ url_for('historico_reservas') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/historico.png" alt="">
+                            <p class="d-block c-white mt-3">Histórico</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('editar_perfil', id=session['id_usuario']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Perfil</p>
+                        </li>
+                    </a>
+                
+                    <a href="{{ url_for('logout') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/sair.png" alt="">
+                            <p class="d-block c-white mt-3">Sair</p>
+                        </li>
+                    </a>
+                </ul>
+            </nav>
+            {% endif %}
 
             {% block content %}{% endblock %}
         </main>
         <footer>
-
         </footer>
         
         <script src="static/js/script.js"></script>
