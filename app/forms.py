@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from app.models import Usuario
+from app.models import Usuario, Barbeiro
 from flask import session
 
 # Para os formulários do site, usamos a extensão FlaskWTF
@@ -68,4 +68,45 @@ class EditarPerfilUsuario(FlaskForm):
         if not usuario.checar_senha(senha_atual.data):
             raise ValidationError('A senha atual está incorreta.')
 
+
+class CadastrarBarbeiro(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    senha = PasswordField('Senha', validators=[DataRequired()])
+
+    cadastrar = SubmitField('Cadastrar')
+
+    def validate_email(self, email):
+        barbeiro = Barbeiro.query.filter_by(email=email.data).first()
+        if barbeiro is not None:
+            raise ValidationError('O e-mail inserido já está sendo usado!')
+
+class EditarPerfilBarbeiro(FlaskForm):
+    nome = StringField('Nome de usuário', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    senha_atual = PasswordField('Senha atual', validators=[DataRequired()])
+    nova_senha = PasswordField('Nova senha', validators=[DataRequired()])
+    confirmar_senha = PasswordField('Confirmar nova senha', 
+        validators=[
+            DataRequired(),
+            EqualTo('nova_senha')
+        ]
+    )
+
+    editar = SubmitField('Editar')
+
+    def __init__(self, email_original, *args, **kwargs):
+        super(EditarPerfilBarbeiro, self).__init__(*args, **kwargs)
+        self.email_original = email_original
+
+    def validate_email(self, email):
+        usuario = Barbeiro.query.filter_by(email=email.data).first()
+        if usuario:
+            if usuario.id != session['id_usuario']:
+                raise ValidationError('O e-mail inserido já está sendo usado!')
+    
+    def validate_senha_atual(self, senha_atual):
+        usuario = Barbeiro.query.filter_by(email=self.email_original).first()
+        if not usuario.checar_senha(senha_atual.data):
+            raise ValidationError('A senha atual está incorreta.')
 

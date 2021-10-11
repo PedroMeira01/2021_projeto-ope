@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="login d-flex align-items-center">
+    <div class="container">
+
+        <div class="row u-row-login">
+
+            <div class="col-xl-6 bgc-black d-none d-xl-flex align-items-center pl-5">
+                <h1 class="c-white login__card--title pl-5">Acesse <br>sua conta</h1>
+            </div>
+
+            <div class="col-xl-6 bgc-white d-flex justify-content-center align-items-center">
+
+                <div class="col-11 col-xl-9">
+                    <h1 class="c-red login__form--title">Login</h1>
+
+                    <h3 class="c-gray">Bem vindo! Faça login para acessar a área de administração.</h3>
+
+                    <form method="POST" class="mt-5">
+                        {{ form.hidden_tag() }}
+
+                        <div class="col-12 px-0 d-flex flex-column my-5 d-none">
+                            <div class="d-flex align-items-center mb-3">
+                                <img width="19px" height="15px" src="../static/img/icon/email.png" alt="">
+                                {{ form.email.label(for='nome-criar', class="login__card--label") }}
+                            </div>
+                            {{ form.email(class='col-12 d-block login__card--input', id='email')}}
+                            {% for error in form.email.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12 px-0 d-flex flex-column mt-5 mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <img width="14px" height="16px" src="../static/img/icon/senha.png" alt="">
+                                {{ form.senha.label(class="login__card--label", for="nome-criar") }}
+                            </div>
+                            {{ form.senha(class='col-12 d-block login__card--input', id='senha')}}
+                            {% for error in form.senha.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-center mt-5">
+                            {{ form.entrar(class="c-white bgc-red col-10 login__card--btn") }}
+                        </div>
+
+                        <div class="col-12 login__card--usuario px-0 d-flex align-items-baseline justify-content-center mt-3">
+                            <a href="">Esqueceu a senha?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
