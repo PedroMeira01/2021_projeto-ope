@@ -105,6 +105,26 @@ def login():
 
     return render_template('login.html', titulo="Login", form=form)
 
+@app.route('/login_admin')
+def login_admin():
+    # Verifica se o usuário já está logado
+    if 'id_barbeiro' in session:
+        return redirect(url_for('admin'))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Busca usuário com credenciais compátiveis a recebida
+        barbeiro = Barbeiro.query.filter_by(email=form.email.data).first()
+        
+        if barbeiro is None or not barbeiro.checar_senha(form.senha.data):
+            flash('E-mail ou senha inválido(s).')
+            return redirect(url_for('login'))
+        # Guarda o id do usuário na sessão
+        session['id_usuario'] = barbeiro.id_barbeiro
+        return redirect(url_for('index'))
+
+    return render_template('login_admin.html', titulo="Login", form=form)
+
 @app.route('/logout')
 def logout():
     """."""
@@ -138,28 +158,30 @@ def cadastro():
 @app.route('/editar_perfil/<id>', methods=['GET', 'POST'])
 def editar_perfil(id):
     if 'id_usuario' in session:
+        if session['id_usuario'] == int(id):
+            usuario = Usuario.query.filter_by(id=id).first()
+            form = EditarPerfilUsuario(usuario.email)
 
-        usuario = Usuario.query.filter_by(id=id).first()
-        form = EditarPerfilUsuario(usuario.email)
+            if form.validate_on_submit():
+                usuario.nome = form.nome.data
+                usuario.email = form.email.data
+                if form.nova_senha:
+                    usuario.criptografar_senha(form.nova_senha.data)
 
-        if form.validate_on_submit():
-            usuario.nome = form.nome.data
-            usuario.email = form.email.data
-            if form.nova_senha:
-                usuario.criptografar_senha(form.nova_senha.data)
+                db.session.add(usuario)
+                db.session.commit()
+                
+                flash('Suas informações foram editadas com sucesso!')
 
-            db.session.add(usuario)
-            db.session.commit()
-            
-            flash('Suas informações foram editadas com sucesso!')
+                return redirect(url_for('editar_perfil', id=id))
 
-            return redirect(url_for('editar_perfil', id=id))
+            elif request.method == 'GET':
+                form.nome.data = usuario.nome
+                form.email.data = usuario.email
 
-        elif request.method == 'GET':
-            form.nome.data = usuario.nome
-            form.email.data = usuario.email
-
-        return render_template('editar_perfil_usuario.html', titulo='Editar perfil', form=form)
+            return render_template('editar_perfil_usuario.html', titulo='Editar perfil', form=form)
+        else:
+            return redirect(url_for('index'))
     else:
         flash('Por favor, faça o login para acessar esta página.')
         return redirect(url_for('login'))
@@ -221,7 +243,3 @@ def historico_reservas():
             reservas=reservas
         )
 
-
-@app.route('/agendamento')
-def agendamento():
-    return render_template('agendamento.html', titulo='agendamento')

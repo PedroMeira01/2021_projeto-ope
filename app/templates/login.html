@@ -18,7 +18,7 @@
 
                     <h3 class="c-gray">Bem vindo! Faça login para ganhar descontos incriveís e oferta</h3>
 
-                    <form method="POST" novalidate class="mt-5">
+                    <form method="POST" class="mt-5">
                         {{ form.hidden_tag() }}
 
                         <div class="col-12 px-0 d-flex flex-column my-5 d-none">
@@ -41,11 +41,6 @@
                             {% for error in form.senha.errors %}
                                 <span style="color: red;">{{ error }}</span>
                             {% endfor %}
-                        </div>
-
-                        <div class="col-12 px-0 d-flex align-items-baseline mt-5 mb-4">
-                            <input type="checkbox" name="logado" id="logado">
-                            <label class="c-gray ml-4" for="logado">Continuar Logado</label>
                         </div>
 
                         <div class="col-12 d-flex justify-content-center mt-5">

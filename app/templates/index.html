@@ -12,7 +12,7 @@
 					</div>
 				</div>
 
-				<form method="POST" class="col-12 d-flex mt-5">
+				<form action="{{ url_for('cadastrar_reserva') }}" method="POST" class="col-12 d-flex mt-5">
 					<div class="col-6 d-flex">
 						<div class="col-4 px-0">
 							<ul>
@@ -39,18 +39,16 @@
 			
 					<div class="col-6 ">
 						<div id="quadro-horarios" class="schedule-area">
-                            {% set x = 1 %}
 							{% for horario in dados['quadro_de_horarios'] %}
 							<div class="col-3 bgc-brown schedule__time">
 								<div class="form__radio-group">
-									<input type="radio" id="hour{{horario.index}}" class="form__radio-input" name="hour" value="{{horario}}">
+									<input type="radio" id="hour{{horario.index}}" class="form__radio-input" name="horario" value="{{horario}}">
 									<label class="form__radio-label" for="hour{{horario.index}}">
 										<span class="form__radio-button"></span>
 										{{horario}}
 									</label>
 								</div>
 							</div>
-                            {% set x = x + 1 %}
 							{% endfor %}
 						</div>
 			
