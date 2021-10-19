@@ -1,0 +1,18 @@
+select, input[type=date] {
+  border: 1px solid $gray;
+  height: 30px;
+  border-radius: 5px;
+  padding-left: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+input[type=number] {
+  width: 50px;
+  height: 20px;
+  margin: 0 5px;
+  border-radius: 10px;
+  border: 1px solid $gray;
+  font-size: 14px;
+  padding-left: 15px;
+}

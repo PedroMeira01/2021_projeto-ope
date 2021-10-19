@@ -14,6 +14,10 @@ $gray2: #cecece;
 
 $color-tertiary: #2d2d2d;
 
+$green: #18b14b;
+
+$yellow: #f4b800;
+
 $white: #fff;
 $black-full: #000;
 
@@ -51,6 +55,8 @@ $black-full: #000;
 @include defineColor('white', $white);
 @include defineColor('black--full', $black-full);
 @include defineColor('gray', $gray);
+@include defineColor('green', $green);
+@include defineColor('yellow', $yellow);
 
 
 // Medias Queries

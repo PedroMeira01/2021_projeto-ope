@@ -1,37 +1,57 @@
 body {
-  font-family: "Chivo", sans-serif !important;
-  font-weight: 400;
+    font-family: "Chivo", sans-serif !important;
+    font-weight: 400;
 } 
 
+label, h1, h2, h3, h4, h5, h6, p {
+    margin-bottom: 0px;
+}
+
 .login {
-  &__card {
+    &__card {
     &--title {
-      font-size: 6rem;
-      line-height: 6rem;
+        font-size: 6rem;
+        line-height: 6rem;
     }
-  }
+    }
 
-  &__form {
+    &__form {
     &--title {
-      font-size: 5rem;
-      font-weight: 600;
+        font-size: 5rem;
+        font-weight: 600;
 
-      @include respond(phone) {
+        @include respond(phone) {
         font-size: 3.5rem;
-      }
+        }
     }
-  }
+    }
 
 }
 
 .section {
 
-  &__title {
+    &__title {
     font-size: 4.5rem;
     font-weight: 600;
-  }
+    }
 
-  &__subtitle {
+    &__subtitle {
     font-size: 1.6rem;
-  }
+    }
+}
+
+.historic {
+
+    &__card {
+
+    &--filter {
+        margin-top: 10px;
+        
+        h3, label {
+            font-size: 1.5rem;
+        }
+    }
+
+    }
+
 }

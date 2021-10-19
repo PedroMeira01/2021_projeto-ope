@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
+<section style="padding-top: 100px;">
     <div class="container">
         <div class="row">
 
             <div class="col-12 px-0">
-                <h1 class="c-brown section__title">Histórico de Agendamento</h1>
+                <h1 class="c-brown section__title u-title-after">Histórico de Agendamento</h1>
                 <p class="c-brown section__subtitle">Aqui você encontra todos os agendamentos</p>
             </div>
 
@@ -41,43 +41,95 @@
                     </div>
                 </div>
 
-                <div class="col-12 d-flex">
+                <div class="col-12 d-flex align-items-center historic__card--filter">
                     <h3>Mostrar</h3>
                     <input type="number" name="" id="">
-                    <label for="">agendamentos</label>
+                    <label for="">Agendamentos</label>
                 </div>
 
                 <div class="col-12 d-flex">
                     
-                    <div class="col-6 d-flex pl-0 historic__status">
+                    <div class="d-flex pl-0 historic__status">
 
-                        <div class="col-2 bgc-red">
+                        <div class="col-3 bgc-yellow d-flex flex-column align-items-center justify-content-center">
                             <h2 class="c-white">15 Nov</h2>
                             <h3 class="c-white">15:00</h3>
                         </div>
 
-                        <div class="col-10">
+                        <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
                             <h2>Barbeiro</h2>
                             <p>Serviço: Corte de Cabelo</p>
-                            <p class="c-red">cancelado</p>
+                            <span class="c-yellow historic__status--message">Pendente</span>
                         </div>
 
                     </div>
 
-                    <div class="col-6 d-flex pr-0 historic__status">
+                    <div class="d-flex pr-0 historic__status">
 
-                        <div class="col-2 bgc-red">
+                        <div class="col-3 bgc-red d-flex flex-column align-items-center justify-content-center">
                             <h2 class="c-white">15 Nov</h2>
                             <h3 class="c-white">15:00</h3>
                         </div>
 
-                        <div class="col-10">
+                        <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
                             <h2>Barbeiro</h2>
                             <p>Serviço: Corte de Cabelo</p>
-                            <p class="c-red">cancelado</p>
+                            <span class="c-red historic__status--message">cancelado</span>
                         </div>
 
                     </div>
+                </div>
+
+                <div class="col-12 d-flex">
+                    
+                    <div class="d-flex pl-0 historic__status">
+
+                        <div class="col-3 bgc-green d-flex flex-column align-items-center justify-content-center">
+                            <h2 class="c-white">15 Nov</h2>
+                            <h3 class="c-white">15:00</h3>
+                        </div>
+
+                        <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
+                            <h2>Barbeiro</h2>
+                            <p>Serviço: Corte de Cabelo</p>
+                            <span class="c-green historic__status--message">Concluída</span>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex pr-0 historic__status">
+
+                        <div class="col-3 bgc-green d-flex flex-column align-items-center justify-content-center">
+                            <h2 class="c-white">15 Nov</h2>
+                            <h3 class="c-white">15:00</h3>
+                        </div>
+
+                        <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
+                            <h2>Barbeiro</h2>
+                            <p>Serviço: Corte de Cabelo</p>
+                            <span class="c-green historic__status--message">Concluída</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex">
+                    
+                    <div class="d-flex pl-0 historic__status">
+
+                        <div class="col-3 bgc-red d-flex flex-column align-items-center justify-content-center">
+                            <h2 class="c-white">15 Nov</h2>
+                            <h3 class="c-white">15:00</h3>
+                        </div>
+
+                        <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
+                            <h2>Barbeiro</h2>
+                            <p>Serviço: Corte de Cabelo</p>
+                            <span class="c-red historic__status--message">cancelado</span>
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
