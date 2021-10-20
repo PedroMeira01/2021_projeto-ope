@@ -42,21 +42,35 @@ function atualizaQuadroHorarios(dados) {
 		quadro_horarios.removeChild(quadro_horarios.lastChild);
 	}
 	// Recria o quadro
+	let x = 0;
 	for (let horario in horarios) {
-		div = document.createElement('div');
+		let hora = 'hour' +  x;
+		let boxHorario = document.createElement('div');
+		boxHorario.setAttribute('class', 'col-3 bgc-brown schedule__time');
 
-		input = document.createElement('input');
+		let input = document.createElement('input');
 		input.setAttribute('type', 'radio');
 		input.setAttribute('value', horarios[horario]);
 		input.setAttribute('name', 'horario');
+		input.setAttribute('class', 'form__radio-input');
+		input.setAttribute('id', hora);
 		
-		label = document.createElement('label');
+		let label = document.createElement('label');
 		label.textContent = horarios[horario];
+		label.setAttribute('class', 'form__radio-label');
+		label.setAttribute('id', hora);
+		label.setAttribute('for', hora);
 
-		div.append(input, label);
+		let span = document.createElement('span');
+		span.setAttribute('class', 'form__radio-button');
+
+		label.append(span);
+		boxHorario.append(input, label);
 		
-		quadro_horarios.appendChild(div)
+		quadro_horarios.appendChild(boxHorario);
+		x++;
 	}
+		
 }
 
 function bloqueiaDatasRetroativas() {
