@@ -287,9 +287,9 @@ def cadastrar_barbeiro():
 def editar_perfil_barbeiro(id):
     if 'id_barbeiro' in session:
         if session['id_barbeiro'] == int(id):
-            barbeiro = Barbeiro.query.filter_by(id=id).first()
+            barbeiro = Barbeiro.query.filter_by(id_barbeiro=id).first()
             
-            form = EditarPerfilUsuario(barbeiro.email)
+            form = EditarPerfilBarbeiro(barbeiro.email)
 
             if form.validate_on_submit():
                 barbeiro.nome = form.nome.data
@@ -308,7 +308,7 @@ def editar_perfil_barbeiro(id):
                 form.nome.data = barbeiro.nome
                 form.email.data = barbeiro.email
 
-            return render_template('editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
+            return render_template('admin/editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
         # Se tentar editar o perfil de outro usuário
         return redirect(url_for('editar_perfil_barbeiro', id=id))
     else:
