@@ -23,7 +23,9 @@
         <h2 style="font-size: 25px;">O seu horário foi agendado.</h2>
 
         <div class="col-12 d-flex px-0 justify-content-end mt-4">
-          <button class="bgc-red2 btn__pattern" type="submit">Confirmar</button>
+          <a href="{{ url_for('index') }}">
+            <button class="bgc-red2 btn__pattern">Confirmar</button>
+          </a>
         </div>
 
       </div>

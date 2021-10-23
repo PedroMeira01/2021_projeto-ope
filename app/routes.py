@@ -112,12 +112,13 @@ def cadastrar_reserva():
             db.session.add(reserva)
             db.session.commit()
 
-            flash('Sua reserva foi agendada com sucesso!\
-            Consulte as informações no seu histórico de agendamento.')
+            #flash('Sua reserva foi agendada com sucesso!\
+            #Consulte as informações no seu histórico de agendamento.')
             return redirect(url_for('historico_reservas'))
         else:
-            flash('Já existe uma reserva marcada neste horário,\
-                 por favor, escolha outro horário.')
+            #flash('Já existe uma reserva marcada neste horário,\
+                 #por favor, escolha outro horário.')
+            return redirect(url_for('login'))
 
             return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
@@ -250,10 +251,22 @@ def editar_perfil(id):
         flash('Por favor, faça o login para acessar esta página.')
         return redirect(url_for('login'))
 
+@app.route('/404')
+def notfound():
+    return render_template('erros/404.html')
+
+@app.route('/sucesso')
+def sucesso():
+    return render_template('/sucesso.html')
+
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
 def admin():
     return render_template('admin/admin.html')
+
+@app.route('/agendamentos')
+def agenda_barbeiro():
+    return render_template('admin/agendamentos.html')
 
 @app.route('/funcionarios')
 def listagem_funcionarios():
