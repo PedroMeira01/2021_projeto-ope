@@ -19,12 +19,12 @@
 								{% for barbeiro in dados['barbeiros'] %}
 									{%if barbeiro.id_barbeiro == dados['barbeiro_escolhido'] %}
 										<li class="mb-4">
-											<input class="schedule__barber--input barbeiro" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" checked required>
+											<input class="schedule__barber--input barbeiro" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" checked>
 											<label class="c-brown schedule__barber" for="barbeiro{{barbeiro.id_barbeiro}}">{{ barbeiro.nome }}</label>
 										</li>
 									{% else %}
 									<li class="mb-4">
-										<input class="schedule__barber--input barbeiro" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()" required>
+										<input class="schedule__barber--input barbeiro" type="radio" value="{{barbeiro.id_barbeiro}}" name="barbeiro" id="barbeiro{{barbeiro.id_barbeiro}}" oninput="buscaQuadroHorariosAtualizado()">
 										<label class="c-brown schedule__barber" for="barbeiro{{barbeiro.id_barbeiro}}">{{ barbeiro.nome }}</label>
 									</li>
 									{% endif %}
@@ -55,17 +55,18 @@
 						<div class="col-12 d-flex mt-5 pr-0">
 							<div class="col-6 px-0">
 								<div class="col-12 px-0">
-									<label class="schedule__service--label" for="serviço">Serviço:</label>
+									<label class="schedule__service--label" for="servico">Serviço:</label>
 								</div>
-								<select class="w-100 schedule__service" name="serviço" id="serviço">
-									<option value="">Selecione</option>
-									<option value="">Corte de Cabelo</option>
-									<option value="">Barba</option>
+								<select class="w-100 schedule__service" name="servico" id="servico" required>
+									<option value="" selected>Selecione</option>
+									{% for servico in dados['servicos'] %}
+									<option value="{{servico.id_servico}}">{{servico.nome}}</option>
+									{% endfor %}
 								</select>
 							</div>
 				
 							<div class="col-6 d-flex justify-content-end align-items-end pr-0">
-								<button class="bgc-red2 btn__pattern" type="submit">Confirmar</button>
+								<button class="bgc-red2 btn__pattern" type="submit" disabled>Confirmar</button>
 							</div>
 						</div>
 					</div>

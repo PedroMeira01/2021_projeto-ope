@@ -38,7 +38,7 @@
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <hr>
-            {{ form.editar() }}
+            {{ form.editar(onclick="return confirm('Tem certeza que deseja editar suas informações pessoais?')") }}
         </form>
     </div>
     </section>

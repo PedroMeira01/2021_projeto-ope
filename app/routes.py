@@ -20,13 +20,15 @@ def index():
         id_barbeiro = request.args.get('id_barbeiro', 1)
 
         barbeiros = busca_barbeiros()
+        servicos = busca_servicos()
         reservas = busca_reservas(data, id_barbeiro)
         quadro_de_horarios = gerar_quadro_horarios(reservas)
 
         dados = {
             'barbeiros': barbeiros,
             'quadro_de_horarios': quadro_de_horarios,
-            'barbeiro_escolhido': id_barbeiro
+            'barbeiro_escolhido': id_barbeiro,
+            'servicos': servicos
         }
         # Se houverem dados na request, retorna apenas o quadro de horários
         if request.args:
@@ -42,6 +44,11 @@ def busca_barbeiros():
     """ Busca todos os barbeiros """
     dados = Barbeiro.query.all()
     return dados
+
+def busca_servicos():
+    dados = Servico.query.all()
+    return dados
+
 # Busca reservas do barbeiro escolhido na data passada
 def busca_reservas(data, id_barbeiro):
     dados = Reserva.query.\
@@ -89,9 +96,13 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
 @app.route('/cadastrar_reserva', methods=['POST'])
 def cadastrar_reserva():
     if 'id_usuario' in session:
+        horario = request.form['horario']
         id_barbeiro = request.form['barbeiro']
         data = datetime.strptime(request.form['data'], '%Y-%m-%d')
-        horario = request.form['horario']
+        servico = request.form['servico']
+
+        raise Exception(servico)
+
         # Convertendo a string para timedelta para determinar o horário fim
         horario_inicio = datetime.strptime(horario, '%H:%M:%S')
         horario_fim = horario_inicio + timedelta(minutes=29)
@@ -106,7 +117,7 @@ def cadastrar_reserva():
                 data=data,
                 usuario_id=usuario_id,
                 barbeiro_id=id_barbeiro,
-                servico_id=1
+                servico_id=servico
             )
 
             db.session.add(reserva)
