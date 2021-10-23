@@ -97,7 +97,7 @@ def cadastrar_reserva():
         horario_fim = horario_inicio + timedelta(minutes=29)
         usuario_id = session['id_usuario']
 
-        existe_reserva = verifica_se_existe_reserva(horario_inicio, id_barbeiro)
+        existe_reserva = verifica_se_existe_reserva(horario_inicio.time(), data, int(id_barbeiro))
 
         if not existe_reserva:
             reserva = Reserva(
@@ -114,19 +114,21 @@ def cadastrar_reserva():
 
             flash('Sua reserva foi agendada com sucesso!\
             Consulte as informações no seu histórico de agendamento.')
+            return redirect(url_for('historico_reservas'))
         else:
             flash('Já existe uma reserva marcada neste horário,\
                  por favor, escolha outro horário.')
 
-        return redirect(url_for('index'))
+            return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
         return redirect(url_for('login'))
 
-def verifica_se_existe_reserva (horario, barbeiro):
-    reserva = Reserva.query.filter_by(horario_inicio=horario,\
-         barbeiro_id=barbeiro).first()
-    return reserva
+def verifica_se_existe_reserva (horario, data, barbeiro):
+    r = Reserva.query.filter_by(horario_inicio=horario, data=datetime.date(data),
+    barbeiro_id=barbeiro).first()
+
+    return r
 
 @app.route('/historico_reservas')
 def historico_reservas():
@@ -273,34 +275,34 @@ def cadastrar_barbeiro():
         form=form
     )
 
-# @app.route('/editar_perfil_barbeiro/<id>', methods=['GET', 'POST'])
-# def editar_perfil_barbeiro(id):
-#     if 'id_barbeiro' in session:
-#         if session['id_barbeiro'] == int(id):
-#             barbeiro = Barbeiro.query.filter_by(id=id).first()
+@app.route('/editar_perfil_barbeiro/<id>', methods=['GET', 'POST'])
+def editar_perfil_barbeiro(id):
+    if 'id_barbeiro' in session:
+        if session['id_barbeiro'] == int(id):
+            barbeiro = Barbeiro.query.filter_by(id=id).first()
             
-#             form = EditarPerfilUsuario(barbeiro.email)
+            form = EditarPerfilUsuario(barbeiro.email)
 
-#             if form.validate_on_submit():
-#                 barbeiro.nome = form.nome.data
-#                 barbeiro.email = form.email.data
-#                 if form.nova_senha:
-#                     barbeiro.criptografar_senha(form.nova_senha.data)
+            if form.validate_on_submit():
+                barbeiro.nome = form.nome.data
+                barbeiro.email = form.email.data
+                if form.nova_senha:
+                    barbeiro.criptografar_senha(form.nova_senha.data)
 
-#                 db.session.add(barbeiro)
-#                 db.session.commit()
+                db.session.add(barbeiro)
+                db.session.commit()
                 
-#                 flash('Suas informações foram editadas com sucesso!')
+                flash('Suas informações foram editadas com sucesso!')
 
-#                 return redirect(url_for('editar_perfil_barbeiro', id=id))
+                return redirect(url_for('editar_perfil_barbeiro', id=id))
 
-#             elif request.method == 'GET':
-#                 form.nome.data = barbeiro.nome
-#                 form.email.data = barbeiro.email
+            elif request.method == 'GET':
+                form.nome.data = barbeiro.nome
+                form.email.data = barbeiro.email
 
-#             return render_template('editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
-#         # Se tentar editar o perfil de outro usuário
-#         return redirect(url_for('editar_perfil_barbeiro', id=id))
-#     else:
-#         flash('Por favor, faça o login para acessar esta página.')
-#         return redirect(url_for('login_admin'))
+            return render_template('editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
+        # Se tentar editar o perfil de outro usuário
+        return redirect(url_for('editar_perfil_barbeiro', id=id))
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
