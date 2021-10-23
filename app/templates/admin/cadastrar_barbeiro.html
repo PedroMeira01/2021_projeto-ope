@@ -2,9 +2,9 @@
 
 {% block content %}
     <section id="profile">
-        <h2 class="internal-title">Seu perfil</h2>
+        <h2 class="internal-title">Novo barbeiro</h2>
         <div class="profile-form-area">
-            <h3> Editar informações pessoais </h3>
+            <h3> Preencha as informações pessoais </h3>
             <form action="{{ url_for('cadastrar_barbeiro') }}" method="POST">
                 {{ form.hidden_tag() }}
 

@@ -65,6 +65,40 @@
             </nav>
             {% endif %}
 
+            {% if session['id_barbeiro'] %}
+            <nav class="menu__side">
+                <ul>
+                    <a href="{{ url_for('listagem_funcionarios') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/historico.png" alt="">
+                            <p class="d-block c-white mt-3">Funcionarios</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('historico_reservas') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/historico.png" alt="">
+                            <p class="d-block c-white mt-3">Histórico</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('editar_perfil', id=session['id_barbeiro']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Perfil</p>
+                        </li>
+                    </a>
+                
+                    <a href="{{ url_for('logout') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/sair.png" alt="">
+                            <p class="d-block c-white mt-3">Sair</p>
+                        </li>
+                    </a>
+                </ul>
+            </nav>
+            {% endif %}
+
             {% block content %}{% endblock %}
         </main>
         <footer>

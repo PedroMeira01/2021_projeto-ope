@@ -65,7 +65,8 @@ class Reserva(db.Model):
                 .join(Barbeiro, Reserva.barbeiro_id==Barbeiro.id_barbeiro)\
                 .join(Servico, Reserva.servico_id==Servico.id_servico)\
                 .add_columns( 
-                    Reserva.data, 
+                    Reserva.data,
+                    Reserva.horario_inicio.label('hora'),
                     Barbeiro.nome.label('barbeiro'), 
                     Servico.nome.label('servico')
                 )\
