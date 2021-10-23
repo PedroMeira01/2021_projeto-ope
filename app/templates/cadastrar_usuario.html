@@ -18,7 +18,7 @@
 
                     <h3 class="c-gray">Bem vindo! Cadastre-se para ganhar descontos incriveís e oferta</h3>
 
-                    <form method="POST" novalidate class="mt-5">
+                    <form method="POST" class="mt-5">
                         {{ form.hidden_tag() }}
 
                         <div class="col-12 px-0 d-flex flex-column">
@@ -71,7 +71,7 @@
 
                         <div class="col-12 login__card--usuario d-flex justify-content-center align-items-baseline mt-5 px-0">
                             <p class="c-gray mr-3">Já é usuário?</p>
-                            <a href="{{ url_for('cadastro') }}">Acessar Conta</a>
+                            <a href="{{ url_for('login') }}">Acessar Conta</a>
                         </div>
 
                     </form>

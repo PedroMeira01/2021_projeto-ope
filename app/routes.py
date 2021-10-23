@@ -135,7 +135,6 @@ def historico_reservas():
 
     reservas = Reserva()
     reservas = reservas.reservas_por_cliente(usuario_id)
-
     return render_template(
             'historico_reservas.html', 
             titulo='Histórico de Reservas', 
@@ -148,6 +147,8 @@ def login():
     # Verifica se o usuário já está logado
     if 'id_usuario' in session:
         return redirect(url_for('index'))
+    elif 'id_barbeiro' in session:
+        return redirect(url_for('admin'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -188,7 +189,10 @@ def logout():
     """."""
     if 'id_usuario' in session:
         session.clear()
-    return redirect(url_for('login'))
+        return redirect(url_for('login'))
+    elif 'id_barbeiro' in session:
+        session.clear()
+        return redirect(url_for('login_admin'))
 
 # USUÁRIOS -----------------------------------------
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -247,60 +251,64 @@ def editar_perfil(id):
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    return render_template('admin/admin.html')
 
 @app.route('/funcionarios')
 def listagem_funcionarios():
     barbeiros = Barbeiro.query.all()
-    return render_template('barbeiro/listagem_funcionarios.html', barbeiros=barbeiros)
+    return render_template('admin/listagem_funcionarios.html', barbeiros=barbeiros)
 
 @app.route('/cadastrar_barbeiro', methods=['GET', 'POST'])
 def cadastrar_barbeiro():
-    form = CadastrarBarbeiro()
-    if form.validate_on_submit():
-        barbeiro = Barbeiro(nome=form.nome.data, email=form.email.data)
-        barbeiro.criptografar_senha(form.senha.data)
+    if 'id_barbeiro' in session:
+        form = CadastrarBarbeiro()
+        if form.validate_on_submit():
+            barbeiro = Barbeiro(nome=form.nome.data, email=form.email.data)
+            barbeiro.criptografar_senha(form.senha.data)
 
-        db.session.add(barbeiro)
-        db.session.commit()
+            db.session.add(barbeiro)
+            db.session.commit()
 
-        flash('Conta criada com sucesso!')
+            flash('Conta criada com sucesso!')
 
-        return redirect(url_for('listagem_funcionarios'))
+            return redirect(url_for('listagem_funcionarios'))
 
-    return render_template('barbeiro/cadastrar_barbeiro.html', 
-        titulo='Cadastrar barbeiro',
-        form=form
-    )
+        return render_template('admin/cadastrar_barbeiro.html', 
+            titulo='Cadastrar barbeiro',
+            form=form
+        )
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
 
-# @app.route('/editar_perfil_barbeiro/<id>', methods=['GET', 'POST'])
-# def editar_perfil_barbeiro(id):
-#     if 'id_barbeiro' in session:
-#         if session['id_barbeiro'] == int(id):
-#             barbeiro = Barbeiro.query.filter_by(id=id).first()
+@app.route('/editar_perfil_barbeiro/<id>', methods=['GET', 'POST'])
+def editar_perfil_barbeiro(id):
+    if 'id_barbeiro' in session:
+        if session['id_barbeiro'] == int(id):
+            barbeiro = Barbeiro.query.filter_by(id=id).first()
             
-#             form = EditarPerfilUsuario(barbeiro.email)
+            form = EditarPerfilUsuario(barbeiro.email)
 
-#             if form.validate_on_submit():
-#                 barbeiro.nome = form.nome.data
-#                 barbeiro.email = form.email.data
-#                 if form.nova_senha:
-#                     barbeiro.criptografar_senha(form.nova_senha.data)
+            if form.validate_on_submit():
+                barbeiro.nome = form.nome.data
+                barbeiro.email = form.email.data
+                if form.nova_senha:
+                    barbeiro.criptografar_senha(form.nova_senha.data)
 
-#                 db.session.add(barbeiro)
-#                 db.session.commit()
+                db.session.add(barbeiro)
+                db.session.commit()
                 
-#                 flash('Suas informações foram editadas com sucesso!')
+                flash('Suas informações foram editadas com sucesso!')
 
-#                 return redirect(url_for('editar_perfil_barbeiro', id=id))
+                return redirect(url_for('editar_perfil_barbeiro', id=id))
 
-#             elif request.method == 'GET':
-#                 form.nome.data = barbeiro.nome
-#                 form.email.data = barbeiro.email
+            elif request.method == 'GET':
+                form.nome.data = barbeiro.nome
+                form.email.data = barbeiro.email
 
-#             return render_template('editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
-#         # Se tentar editar o perfil de outro usuário
-#         return redirect(url_for('editar_perfil_barbeiro', id=id))
-#     else:
-#         flash('Por favor, faça o login para acessar esta página.')
-#         return redirect(url_for('login_admin'))
+            return render_template('editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
+        # Se tentar editar o perfil de outro usuário
+        return redirect(url_for('editar_perfil_barbeiro', id=id))
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
