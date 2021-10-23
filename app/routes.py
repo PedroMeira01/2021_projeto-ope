@@ -112,15 +112,13 @@ def cadastrar_reserva():
             db.session.add(reserva)
             db.session.commit()
 
-            #flash('Sua reserva foi agendada com sucesso!\
-            #Consulte as informações no seu histórico de agendamento.')
+            flash('Sua reserva foi agendada com sucesso!')
             return redirect(url_for('historico_reservas'))
-        else:
-            #flash('Já existe uma reserva marcada neste horário,\
-                 #por favor, escolha outro horário.')
-            return redirect(url_for('login'))
 
-            return redirect(url_for('index'))
+        flash('Já existe uma reserva marcada neste horário,\
+                 por favor, escolha outro horário.')
+
+        return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
         return redirect(url_for('login'))
