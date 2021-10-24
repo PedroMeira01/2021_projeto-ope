@@ -1,12 +1,10 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from app import app, db
 from app.forms import EditarPerfilUsuario, LoginForm, CadastrarUsuario,\
-CadastrarBarbeiro, EditarPerfilBarbeiro
+CadastrarBarbeiro, EditarPerfilBarbeiro, AlterarSenhaBarbeiro, AlterarSenhaUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
 from datetime import datetime, timedelta, time, date
 import json
-
-#  -------------------------------------------------
 
 # RESERVAS -------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
@@ -239,8 +237,6 @@ def editar_perfil(id):
             if form.validate_on_submit():
                 usuario.nome = form.nome.data
                 usuario.email = form.email.data
-                if form.nova_senha:
-                    usuario.criptografar_senha(form.nova_senha.data)
 
                 db.session.add(usuario)
                 db.session.commit()
@@ -259,6 +255,28 @@ def editar_perfil(id):
     else:
         flash('Por favor, faça o login para acessar esta página.')
         return redirect(url_for('login'))
+
+@app.route('/alterar_senha/<id>', methods=['GET', 'POST'])
+def alterar_senha(id):
+    if 'id_usuario' in session:
+        if session['id_usuario'] == int(id):
+
+            form = AlterarSenhaUsuario(id)
+
+            if form.validate_on_submit():
+                usuario = Usuario.query.filter_by(id=id).first()
+                usuario.criptografar_senha(form.nova_senha.data)
+
+                db.session.add(usuario)
+                db.session.commit()
+                flash('Senha alterada com sucesso!')
+            
+            return render_template('alterar_senha.html', form=form)
+
+        return redirect(url_for('alterar_senha', id=session['id_usuario']))
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
 
 @app.route('/404')
 def notfound():
@@ -316,8 +334,6 @@ def editar_perfil_barbeiro(id):
             if form.validate_on_submit():
                 barbeiro.nome = form.nome.data
                 barbeiro.email = form.email.data
-                if form.nova_senha:
-                    barbeiro.criptografar_senha(form.nova_senha.data)
 
                 db.session.add(barbeiro)
                 db.session.commit()
@@ -336,3 +352,26 @@ def editar_perfil_barbeiro(id):
     else:
         flash('Por favor, faça o login para acessar esta página.')
         return redirect(url_for('login_admin'))
+
+@app.route('/alterar_senha_barbeiro/<id>', methods=['GET', 'POST'])
+def alterar_senha_barbeiro(id):
+    if 'id_barbeiro' in session:
+        if session['id_barbeiro'] == int(id):
+
+            form = AlterarSenhaBarbeiro(id)
+
+            if form.validate_on_submit():
+                barbeiro = Barbeiro.query.filter_by(id_barbeiro=id).first()
+                barbeiro.criptografar_senha(form.nova_senha.data)
+
+                db.session.add(barbeiro)
+                db.session.commit()
+                flash('Senha alterada com sucesso!')
+            
+            return render_template('admin/alterar_senha.html', form=form)
+
+        return redirect(url_for('alterar_senha', id=session['id_barbeiro']))
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
+        
