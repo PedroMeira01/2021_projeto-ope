@@ -6,6 +6,7 @@ from app.models import Usuario, Barbeiro, Servico, Reserva
 from datetime import datetime, timedelta, time, date
 import json
 
+
 # RESERVAS -------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -47,7 +48,6 @@ def busca_servicos():
     dados = Servico.query.all()
     return dados
 
-# Busca reservas do barbeiro escolhido na data passada
 def busca_reservas(data, id_barbeiro):
     dados = Reserva.query.\
     filter_by(data=data, barbeiro_id=id_barbeiro).all()
@@ -99,16 +99,15 @@ def cadastrar_reserva():
         data = datetime.strptime(request.form['data'], '%Y-%m-%d')
         servico = request.form['servico']
 
-        raise Exception(servico)
-
         # Convertendo a string para timedelta para determinar o horário fim
         horario_inicio = datetime.strptime(horario, '%H:%M:%S')
         horario_fim = horario_inicio + timedelta(minutes=29)
         usuario_id = session['id_usuario']
 
         existe_reserva = verifica_se_existe_reserva(horario_inicio.time(), data, int(id_barbeiro))
+        limite = verifica_limite_reserva(usuario_id, data)
 
-        if not existe_reserva:
+        if not existe_reserva and limite:
             reserva = Reserva(
                 horario_inicio=horario_inicio.time(),
                 horario_fim=horario_fim.time(),
@@ -124,9 +123,7 @@ def cadastrar_reserva():
             flash('Sua reserva foi agendada com sucesso!')
             return redirect(url_for('historico_reservas'))
 
-        flash('Já existe uma reserva marcada neste horário,\
-                 por favor, escolha outro horário.')
-
+        flash('Não foi possível efetuar sua reserva.')
         return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
@@ -137,6 +134,13 @@ def verifica_se_existe_reserva (horario, data, barbeiro):
     barbeiro_id=barbeiro).first()
 
     return r
+
+def verifica_limite_reserva(usuario_id, data):
+    r = Reserva.query.filter_by(data=datetime.date(data), usuario_id=usuario_id).all()
+
+    if len(r) >= 2:
+        return False
+    return True
 
 @app.route('/historico_reservas')
 def historico_reservas():
@@ -150,6 +154,7 @@ def historico_reservas():
             titulo='Histórico de Reservas', 
             reservas=reservas
         )
+
 
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])
@@ -203,6 +208,7 @@ def logout():
     elif 'id_barbeiro' in session:
         session.clear()
         return redirect(url_for('login_admin'))
+
 
 # USUÁRIOS -----------------------------------------
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -285,6 +291,7 @@ def notfound():
 @app.route('/sucesso')
 def sucesso():
     return render_template('/sucesso.html')
+
 
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
