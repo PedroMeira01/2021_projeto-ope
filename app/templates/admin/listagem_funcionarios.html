@@ -1,7 +1,121 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Listagem de funcionarios</h1>
+<section>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-12 px-0">
+                <h1 class="c-brown section__title u-title-after">Funcionários</h1>
+            </div>
+
+            <div class="col-12 historic__card">
+
+                <div class="col-12 px-0 d-flex">
+
+                    <div class="col-2">
+                        <input class="w-100" type="text" name="" id="" placeholder="Nome">
+                    </div>
+                    
+                    <div class="col-3">
+                        <select class="w-100" name="" id="">
+                            <option value="" disabled>Filtrar Status:</option>
+                            <option value="">Ver todos</option>
+                            <option value="">Cancelados</option>
+                            <option value="">Concluídos</option>
+                            <option value="">Pendente</option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <input type="date" name="" id="">
+                    </div>
+
+                    <div class="col-2">
+                        <button class="bgc-red2 btn__pattern" type="submit">Limpar</button>
+                    </div>
+
+                    <div class="col-2">
+                        <button class="bgc-blue btn__pattern" type="submit">
+                            <img src="../static/img/icon/add_funcionario.svg" alt="" class="img-fluid">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex align-items-center historic__card--filter">
+                    <h3>Mostrar</h3>
+                    <input type="number" name="" id="">
+                    <label for="">Agendamentos</label>
+                </div>
+
+                <div class="col-11 employees__card ml-4">
+
+                    <div class="col-12 px-0 d-flex align-items-center">
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Nome</h2>
+                        </div>
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Cargo</h2>
+                        </div>
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Data de Admissão</h2>
+                        </div>
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Opções</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 px-0 d-flex align-items-center bgc-gray2">
+
+                        <div class="col-3">
+                            <h3 class="c-brown">Vinícius Dias Mota de Oliveira</h3>
+                        </div>
+                        
+                        <div class="col-3">
+                            <h3 class="c-brown">Barbeiro</h3>
+                        </div>
+
+                        <div class="col-3">
+                            <h3 class="c-brown">26/20/2020</h3>
+                        </div>
+
+                        <div class="col-3 d-flex px-0">
+
+                            <div class="col-6">
+                                <button class="bgc-red2 btn__pattern" type="submit">
+                                    Limpar
+                                </button>
+                            </div>
+
+                            <div class="col-6">
+                                <button class="bgc-blue btn__pattern" type="submit">
+                                    Editar
+                                </button>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- <h1>Listagem de funcionarios</h1>
 
 <div>
     <table>
@@ -24,5 +138,5 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
+</div> -->
 {% endblock %}
