@@ -1,5 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import desc
 
 class Usuario(db.Model):
     # Para que o FlaskLogin funcione, a PK do usuário deve ter o nome "id" apenas.
@@ -70,6 +71,8 @@ class Reserva(db.Model):
                     Barbeiro.nome.label('barbeiro'), 
                     Servico.nome.label('servico')
                 )\
-                .filter(Reserva.usuario_id == usuario_id).all()
+                .filter(Reserva.usuario_id == usuario_id)\
+                .order_by(desc(Reserva.data))\
+                .all()
 
         return reservas
