@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section id="profile">
+      <h2 class="internal-title">Alterar senha</h2>
+    <div class="profile-form-area">
+        <h3> Preencha os campos abaixo: </h3>
+        <form action="{{ url_for('alterar_senha_barbeiro', id=session['id_barbeiro']) }}" method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.senha_atual.label() }} 
+            {{ form.senha_atual() }} 
+            {% for error in form.senha_atual.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.nova_senha.label() }} 
+            {{ form.nova_senha() }} 
+            {% for error in form.nova_senha.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.confirmar_senha.label() }} 
+            {{ form.confirmar_senha() }} 
+            {% for error in form.confirmar_senha.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.redefinir() }}
+        </form>
+    </div>
+    </section>
+{% endblock %}

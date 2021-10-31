@@ -5,7 +5,7 @@
       <h2 class="internal-title">Perfil</h2>
     <div class="profile-form-area">
         <h3> Editar informações pessoais </h3>
-        <form action="{{ url_for('editar_perfil', id=session['id_usuario']) }}" method="POST">
+        <form action="{{ url_for('editar_perfil_barbeiro', id=session['id_barbeiro']) }}" method="POST">
             {{ form.hidden_tag() }}
 
             {{ form.nome.label() }} 
@@ -20,7 +20,7 @@
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
             <hr>
-            {{ form.editar(onclick="return confirm('Tem certeza que deseja editar suas informações pessoais?')") }}
+            {{ form.editar() }}
         </form>
     </div>
     </section>

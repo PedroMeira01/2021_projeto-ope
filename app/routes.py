@@ -1,12 +1,11 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from app import app, db
 from app.forms import EditarPerfilUsuario, LoginForm, CadastrarUsuario,\
-CadastrarBarbeiro, EditarPerfilBarbeiro
+CadastrarBarbeiro, EditarPerfilBarbeiro, AlterarSenhaBarbeiro, AlterarSenhaUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
 from datetime import datetime, timedelta, time, date
 import json
 
-#  -------------------------------------------------
 
 # RESERVAS -------------------------------------------------
 @app.route('/', methods=['GET', 'POST'])
@@ -20,13 +19,15 @@ def index():
         id_barbeiro = request.args.get('id_barbeiro', 1)
 
         barbeiros = busca_barbeiros()
+        servicos = busca_servicos()
         reservas = busca_reservas(data, id_barbeiro)
         quadro_de_horarios = gerar_quadro_horarios(reservas)
 
         dados = {
             'barbeiros': barbeiros,
             'quadro_de_horarios': quadro_de_horarios,
-            'barbeiro_escolhido': id_barbeiro
+            'barbeiro_escolhido': id_barbeiro,
+            'servicos': servicos
         }
         # Se houverem dados na request, retorna apenas o quadro de horários
         if request.args:
@@ -42,7 +43,11 @@ def busca_barbeiros():
     """ Busca todos os barbeiros """
     dados = Barbeiro.query.all()
     return dados
-# Busca reservas do barbeiro escolhido na data passada
+
+def busca_servicos():
+    dados = Servico.query.all()
+    return dados
+
 def busca_reservas(data, id_barbeiro):
     dados = Reserva.query.\
     filter_by(data=data, barbeiro_id=id_barbeiro).all()
@@ -89,44 +94,53 @@ def quadro_horarios_vagos(quadro_de_horarios, reservas):
 @app.route('/cadastrar_reserva', methods=['POST'])
 def cadastrar_reserva():
     if 'id_usuario' in session:
+        horario = request.form['horario']
         id_barbeiro = request.form['barbeiro']
         data = datetime.strptime(request.form['data'], '%Y-%m-%d')
-        horario = request.form['horario']
+        servico = request.form['servico']
+
         # Convertendo a string para timedelta para determinar o horário fim
         horario_inicio = datetime.strptime(horario, '%H:%M:%S')
         horario_fim = horario_inicio + timedelta(minutes=29)
         usuario_id = session['id_usuario']
 
-        existe_reserva = verifica_se_existe_reserva(horario_inicio, id_barbeiro)
+        existe_reserva = verifica_se_existe_reserva(horario_inicio.time(), data, int(id_barbeiro))
+        limite = verifica_limite_reserva(usuario_id, data)
 
-        if not existe_reserva:
+        if not existe_reserva and limite:
             reserva = Reserva(
                 horario_inicio=horario_inicio.time(),
                 horario_fim=horario_fim.time(),
                 data=data,
                 usuario_id=usuario_id,
                 barbeiro_id=id_barbeiro,
-                servico_id=1
+                servico_id=servico
             )
 
             db.session.add(reserva)
             db.session.commit()
 
-            flash('Sua reserva foi agendada com sucesso!\
-            Consulte as informações no seu histórico de agendamento.')
-        else:
-            flash('Já existe uma reserva marcada neste horário,\
-                 por favor, escolha outro horário.')
+            flash('Sua reserva foi agendada com sucesso!')
+            return redirect(url_for('historico_reservas'))
 
+        flash('Não foi possível efetuar sua reserva.')
         return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
         return redirect(url_for('login'))
 
-def verifica_se_existe_reserva (horario, barbeiro):
-    reserva = Reserva.query.filter_by(horario_inicio=horario,\
-         barbeiro_id=barbeiro).first()
-    return reserva
+def verifica_se_existe_reserva (horario, data, barbeiro):
+    r = Reserva.query.filter_by(horario_inicio=horario, data=datetime.date(data),
+    barbeiro_id=barbeiro).first()
+
+    return r
+
+def verifica_limite_reserva(usuario_id, data):
+    r = Reserva.query.filter_by(data=datetime.date(data), usuario_id=usuario_id).all()
+
+    if len(r) >= 2:
+        return False
+    return True
 
 @app.route('/historico_reservas')
 def historico_reservas():
@@ -152,6 +166,7 @@ def historico_reservas():
             titulo='Histórico de Reservas', 
             reservas=lista_reservas,
         )
+
 
 # AUTENTICAÇÃO  -----------------------------------------
 @app.route('/login', methods=['GET', 'POST'])
@@ -206,6 +221,7 @@ def logout():
         session.clear()
         return redirect(url_for('login_admin'))
 
+
 # USUÁRIOS -----------------------------------------
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -239,8 +255,6 @@ def editar_perfil(id):
             if form.validate_on_submit():
                 usuario.nome = form.nome.data
                 usuario.email = form.email.data
-                if form.nova_senha:
-                    usuario.criptografar_senha(form.nova_senha.data)
 
                 db.session.add(usuario)
                 db.session.commit()
@@ -260,10 +274,45 @@ def editar_perfil(id):
         flash('Por favor, faça o login para acessar esta página.')
         return redirect(url_for('login'))
 
+@app.route('/alterar_senha/<id>', methods=['GET', 'POST'])
+def alterar_senha(id):
+    if 'id_usuario' in session:
+        if session['id_usuario'] == int(id):
+
+            form = AlterarSenhaUsuario(id)
+
+            if form.validate_on_submit():
+                usuario = Usuario.query.filter_by(id=id).first()
+                usuario.criptografar_senha(form.nova_senha.data)
+
+                db.session.add(usuario)
+                db.session.commit()
+                flash('Senha alterada com sucesso!')
+            
+            return render_template('alterar_senha.html', form=form)
+
+        return redirect(url_for('alterar_senha', id=session['id_usuario']))
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
+
+@app.route('/404')
+def notfound():
+    return render_template('erros/404.html')
+
+@app.route('/sucesso')
+def sucesso():
+    return render_template('/sucesso.html')
+
+
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
 def admin():
     return render_template('admin/admin.html')
+
+@app.route('/agendamentos')
+def agenda_barbeiro():
+    return render_template('admin/agendamentos.html')
 
 @app.route('/funcionarios')
 def listagem_funcionarios():
@@ -297,15 +346,13 @@ def cadastrar_barbeiro():
 def editar_perfil_barbeiro(id):
     if 'id_barbeiro' in session:
         if session['id_barbeiro'] == int(id):
-            barbeiro = Barbeiro.query.filter_by(id=id).first()
+            barbeiro = Barbeiro.query.filter_by(id_barbeiro=id).first()
             
-            form = EditarPerfilUsuario(barbeiro.email)
+            form = EditarPerfilBarbeiro(barbeiro.email)
 
             if form.validate_on_submit():
                 barbeiro.nome = form.nome.data
                 barbeiro.email = form.email.data
-                if form.nova_senha:
-                    barbeiro.criptografar_senha(form.nova_senha.data)
 
                 db.session.add(barbeiro)
                 db.session.commit()
@@ -318,9 +365,32 @@ def editar_perfil_barbeiro(id):
                 form.nome.data = barbeiro.nome
                 form.email.data = barbeiro.email
 
-            return render_template('editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
+            return render_template('admin/editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
         # Se tentar editar o perfil de outro usuário
         return redirect(url_for('editar_perfil_barbeiro', id=id))
     else:
         flash('Por favor, faça o login para acessar esta página.')
         return redirect(url_for('login_admin'))
+
+@app.route('/alterar_senha_barbeiro/<id>', methods=['GET', 'POST'])
+def alterar_senha_barbeiro(id):
+    if 'id_barbeiro' in session:
+        if session['id_barbeiro'] == int(id):
+
+            form = AlterarSenhaBarbeiro(id)
+
+            if form.validate_on_submit():
+                barbeiro = Barbeiro.query.filter_by(id_barbeiro=id).first()
+                barbeiro.criptografar_senha(form.nova_senha.data)
+
+                db.session.add(barbeiro)
+                db.session.commit()
+                flash('Senha alterada com sucesso!')
+            
+            return render_template('admin/alterar_senha.html', form=form)
+
+        return redirect(url_for('alterar_senha', id=session['id_barbeiro']))
+    else:
+        flash('Por favor, faça o login para acessar esta página.')
+        return redirect(url_for('login_admin'))
+        

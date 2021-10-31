@@ -49,9 +49,16 @@
                     </a>
 
                     <a href="{{ url_for('editar_perfil', id=session['id_usuario']) }}">
-                        <li>
+                        <li class="mt-5">
                             <img src="../static/img/icon/usuario-branco.png" alt="">
                             <p class="d-block c-white mt-3">Perfil</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('alterar_senha', id=session['id_usuario']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Alterar senha</p>
                         </li>
                     </a>
                 
@@ -82,10 +89,17 @@
                         </li>
                     </a>
 
-                    <a href="{{ url_for('editar_perfil', id=session['id_barbeiro']) }}">
+                    <a href="{{ url_for('editar_perfil_barbeiro', id=session['id_barbeiro']) }}">
                         <li>
                             <img src="../static/img/icon/usuario-branco.png" alt="">
                             <p class="d-block c-white mt-3">Perfil</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('alterar_senha_barbeiro', id=session['id_barbeiro']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Alterar senha</p>
                         </li>
                     </a>
                 

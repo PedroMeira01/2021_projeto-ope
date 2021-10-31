@@ -44,6 +44,7 @@ class CadastrarUsuario(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
 
 class EditarPerfilUsuario(FlaskForm):
+<<<<<<< HEAD
     nome = StringField('Nome de usuário', validators=[DataRequired(message="O nome é obrigatório.")])
     email = StringField('E-mail', validators=[DataRequired(), Email(message="O e-mail é obrigatório.")])
     senha_atual = PasswordField('Senha atual', validators=[DataRequired(message="A senha atual é obrigatória.")])
@@ -54,6 +55,11 @@ class EditarPerfilUsuario(FlaskForm):
             EqualTo('nova_senha')
         ]
     )
+=======
+    nome = StringField('Nome de usuário', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+
+>>>>>>> 3bdffbb8a8eda1121bb44794b64d8e3dc3cb1bd4
     editar = SubmitField('Editar')
 
     def __init__(self, email_original, *args, **kwargs):
@@ -65,11 +71,6 @@ class EditarPerfilUsuario(FlaskForm):
         if usuario:
             if usuario.id != session['id_usuario']:
                 raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
-    
-    def validate_senha_atual(self, senha_atual):
-        usuario = Usuario.query.filter_by(email=self.email_original).first()
-        if not usuario.checar_senha(senha_atual.data):
-            raise ValidationError('A senha atual está incorreta.')
 
 
 class CadastrarBarbeiro(FlaskForm):
@@ -85,16 +86,14 @@ class CadastrarBarbeiro(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado!')
 
 class EditarPerfilBarbeiro(FlaskForm):
+<<<<<<< HEAD
     nome = StringField('Nome de usuário', validators=[DataRequired(message="O nome é obrigatório.")])
     email = StringField('E-mail', validators=[DataRequired(message="O e-mail é obrigatório."), Email()])
     senha_atual = PasswordField('Senha atual', validators=[DataRequired(message="Preencha a senha atual.")])
     nova_senha = PasswordField('Nova senha', validators=[DataRequired(message="Escolha uma nova senha.")])
-    confirmar_senha = PasswordField('Confirmar nova senha', 
-        validators=[
-            DataRequired(message="É necessário confirmar a senha."),
-            EqualTo('nova_senha')
-        ]
-    )
+=======
+    nome = StringField('Nome de usuário', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
 
     editar = SubmitField('Editar')
 
@@ -103,13 +102,50 @@ class EditarPerfilBarbeiro(FlaskForm):
         self.email_original = email_original
 
     def validate_email(self, email):
-        usuario = Barbeiro.query.filter_by(email=email.data).first()
-        if usuario:
-            if usuario.id != session['id_usuario']:
+        barbeiro = Barbeiro.query.filter_by(email=email.data).first()
+        if barbeiro:
+            if barbeiro.id_barbeiro != session['id_barbeiro']:
                 raise ValidationError('O e-mail inserido já está sendo usado!')
-    
+
+class AlterarSenhaBarbeiro(FlaskForm):
+    senha_atual = PasswordField('Senha atual', validators=[DataRequired()])
+    nova_senha = PasswordField('Nova senha', validators=[DataRequired()])
+>>>>>>> 3bdffbb8a8eda1121bb44794b64d8e3dc3cb1bd4
+    confirmar_senha = PasswordField('Confirmar nova senha', 
+        validators=[
+            DataRequired(message="É necessário confirmar a senha."),
+            EqualTo('nova_senha')
+        ]
+    )
+
+    redefinir = SubmitField('Redefinir senha')
+
+    def __init__(self, id_barbeiro, *args, **kwargs):
+        super(AlterarSenhaBarbeiro, self).__init__(*args, **kwargs)
+        self.id_barbeiro = id_barbeiro
+
     def validate_senha_atual(self, senha_atual):
-        usuario = Barbeiro.query.filter_by(email=self.email_original).first()
-        if not usuario.checar_senha(senha_atual.data):
+        barbeiro = Barbeiro.query.filter_by(id_barbeiro=self.id_barbeiro).first()
+        if not barbeiro.checar_senha(senha_atual.data):
             raise ValidationError('A senha atual está incorreta.')
 
+class AlterarSenhaUsuario(FlaskForm):
+    senha_atual = PasswordField('Senha atual', validators=[DataRequired()])
+    nova_senha = PasswordField('Nova senha', validators=[DataRequired()])
+    confirmar_senha = PasswordField('Confirmar nova senha', 
+        validators=[
+            DataRequired(),
+            EqualTo('nova_senha')
+        ]
+    )
+
+    redefinir = SubmitField('Redefinir senha')
+
+    def __init__(self, id, *args, **kwargs):
+        super(AlterarSenhaUsuario, self).__init__(*args, **kwargs)
+        self.id = id
+
+    def validate_senha_atual(self, senha_atual):
+        usuario = Usuario.query.filter_by(id=self.id).first()
+        if not usuario.checar_senha(senha_atual.data):
+            raise ValidationError('A senha atual está incorreta.')

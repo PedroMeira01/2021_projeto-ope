@@ -1,4 +1,6 @@
-select, input[type=date] {
+select, 
+input[type=date],
+input[type=text] {
   border: 1px solid $gray;
   height: 30px;
   border-radius: 5px;
