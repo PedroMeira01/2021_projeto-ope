@@ -36,7 +36,7 @@ def index():
         return render_template('index.html', titulo="Home", dados=dados)
     # Se não estiver logado, redireciona para o login
     else:
-        flash('Por favor, faça o login para acessar esta página.')
+        flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login'))
 
 def busca_barbeiros():
@@ -120,10 +120,10 @@ def cadastrar_reserva():
             db.session.add(reserva)
             db.session.commit()
 
-            flash('Sua reserva foi agendada com sucesso!')
+            flash('Sua reserva foi agendada com sucesso!','success')
             return redirect(url_for('historico_reservas'))
 
-        flash('Não foi possível efetuar sua reserva.')
+        flash('Não foi possível efetuar sua reserva.','warning')
         return redirect(url_for('index'))
     # Se não estiver logado, redireciona para o login
     else:
@@ -171,7 +171,7 @@ def login():
         usuario = Usuario.query.filter_by(email=form.email.data).first()
         
         if usuario is None or not usuario.checar_senha(form.senha.data):
-            flash('E-mail ou senha inválido(s).')
+            flash('E-mail ou senha inválido(s).','danger')
             return redirect(url_for('login'))
         # Guarda o id do usuário na sessão
         session['id_usuario'] = usuario.id
@@ -191,7 +191,7 @@ def login_admin():
         barbeiro = Barbeiro.query.filter_by(email=form.email.data).first()
         
         if barbeiro is None or not barbeiro.checar_senha(form.senha.data):
-            flash('E-mail ou senha inválido(s).')
+            flash('E-mail ou senha inválido(s).','danger')
             return redirect(url_for('login_admin'))
         # Guarda o id do usuário na sessão
         session['id_barbeiro'] = barbeiro.id_barbeiro
@@ -228,7 +228,7 @@ def cadastro():
         db.session.add(usuario)
         db.session.commit()
 
-        flash('Sua conta foi criada com sucesso!')
+        flash('Sua conta foi criada com sucesso!','success')
         return redirect(url_for('login'))
     
     return render_template('cadastrar_usuario.html', titulo="Crie sua conta", form=form)
@@ -247,7 +247,7 @@ def editar_perfil(id):
                 db.session.add(usuario)
                 db.session.commit()
                 
-                flash('Suas informações foram editadas com sucesso!')
+                flash('Suas informações foram editadas com sucesso!','success')
 
                 return redirect(url_for('editar_perfil', id=id))
 
@@ -259,7 +259,7 @@ def editar_perfil(id):
         # Se tentar editar o perfil de outro usuário
         return redirect(url_for('editar_perfil', id=id))
     else:
-        flash('Por favor, faça o login para acessar esta página.')
+        flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login'))
 
 @app.route('/alterar_senha/<id>', methods=['GET', 'POST'])
@@ -275,13 +275,13 @@ def alterar_senha(id):
 
                 db.session.add(usuario)
                 db.session.commit()
-                flash('Senha alterada com sucesso!')
+                flash('Senha alterada com sucesso!','success')
             
             return render_template('alterar_senha.html', form=form)
 
         return redirect(url_for('alterar_senha', id=session['id_usuario']))
     else:
-        flash('Por favor, faça o login para acessar esta página.')
+        flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
 
 @app.route('/404')
@@ -318,7 +318,7 @@ def cadastrar_barbeiro():
             db.session.add(barbeiro)
             db.session.commit()
 
-            flash('Conta criada com sucesso!')
+            flash('Conta criada com sucesso!','success')
 
             return redirect(url_for('listagem_funcionarios'))
 
@@ -327,7 +327,7 @@ def cadastrar_barbeiro():
             form=form
         )
     else:
-        flash('Por favor, faça o login para acessar esta página.')
+        flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
 
 @app.route('/editar_perfil_barbeiro/<id>', methods=['GET', 'POST'])
@@ -345,7 +345,7 @@ def editar_perfil_barbeiro(id):
                 db.session.add(barbeiro)
                 db.session.commit()
                 
-                flash('Suas informações foram editadas com sucesso!')
+                flash('Suas informações foram editadas com sucesso!','success')
 
                 return redirect(url_for('editar_perfil_barbeiro', id=id))
 
@@ -357,7 +357,7 @@ def editar_perfil_barbeiro(id):
         # Se tentar editar o perfil de outro usuário
         return redirect(url_for('editar_perfil_barbeiro', id=id))
     else:
-        flash('Por favor, faça o login para acessar esta página.')
+        flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
 
 @app.route('/alterar_senha_barbeiro/<id>', methods=['GET', 'POST'])
@@ -373,12 +373,12 @@ def alterar_senha_barbeiro(id):
 
                 db.session.add(barbeiro)
                 db.session.commit()
-                flash('Senha alterada com sucesso!')
+                flash('Senha alterada com sucesso!','success')
             
             return render_template('admin/alterar_senha.html', form=form)
 
         return redirect(url_for('alterar_senha', id=session['id_barbeiro']))
     else:
-        flash('Por favor, faça o login para acessar esta página.')
+        flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
         
