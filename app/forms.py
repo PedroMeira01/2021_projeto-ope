@@ -44,22 +44,8 @@ class CadastrarUsuario(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
 
 class EditarPerfilUsuario(FlaskForm):
-<<<<<<< HEAD
     nome = StringField('Nome de usuário', validators=[DataRequired(message="O nome é obrigatório.")])
     email = StringField('E-mail', validators=[DataRequired(), Email(message="O e-mail é obrigatório.")])
-    senha_atual = PasswordField('Senha atual', validators=[DataRequired(message="A senha atual é obrigatória.")])
-    nova_senha = PasswordField('Nova senha', validators=[DataRequired(message="Escolha uma nova senha.")])
-    confirmar_senha = PasswordField('Confirmar nova senha', 
-        validators=[
-            DataRequired(message="Confirme a nova senha."),
-            EqualTo('nova_senha')
-        ]
-    )
-=======
-    nome = StringField('Nome de usuário', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
-
->>>>>>> 3bdffbb8a8eda1121bb44794b64d8e3dc3cb1bd4
     editar = SubmitField('Editar')
 
     def __init__(self, email_original, *args, **kwargs):
@@ -86,15 +72,8 @@ class CadastrarBarbeiro(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado!')
 
 class EditarPerfilBarbeiro(FlaskForm):
-<<<<<<< HEAD
     nome = StringField('Nome de usuário', validators=[DataRequired(message="O nome é obrigatório.")])
     email = StringField('E-mail', validators=[DataRequired(message="O e-mail é obrigatório."), Email()])
-    senha_atual = PasswordField('Senha atual', validators=[DataRequired(message="Preencha a senha atual.")])
-    nova_senha = PasswordField('Nova senha', validators=[DataRequired(message="Escolha uma nova senha.")])
-=======
-    nome = StringField('Nome de usuário', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
-
     editar = SubmitField('Editar')
 
     def __init__(self, email_original, *args, **kwargs):
@@ -110,7 +89,6 @@ class EditarPerfilBarbeiro(FlaskForm):
 class AlterarSenhaBarbeiro(FlaskForm):
     senha_atual = PasswordField('Senha atual', validators=[DataRequired()])
     nova_senha = PasswordField('Nova senha', validators=[DataRequired()])
->>>>>>> 3bdffbb8a8eda1121bb44794b64d8e3dc3cb1bd4
     confirmar_senha = PasswordField('Confirmar nova senha', 
         validators=[
             DataRequired(message="É necessário confirmar a senha."),
