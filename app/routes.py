@@ -149,10 +149,22 @@ def historico_reservas():
 
     reservas = Reserva()
     reservas = reservas.reservas_por_cliente(usuario_id)
+    lista_reservas = []
+
+    for reserva in reservas:
+        retroativa = reserva.data < date.today()
+        r = {
+                "data": reserva.data.strftime("%d/%m/%Y"), 
+                "hora": reserva.hora.strftime("%H:%M"), 
+                "barbeiro": reserva.barbeiro, 
+                "servico": reserva.servico,
+                "retroativa": retroativa
+            }
+        lista_reservas.append(r)
     return render_template(
             'historico_reservas.html', 
             titulo='Histórico de Reservas', 
-            reservas=reservas
+            reservas=lista_reservas,
         )
 
 

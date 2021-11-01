@@ -18,19 +18,22 @@ class LoginForm(FlaskForm):
     # vem do módulo "validators" do pacote WTForms.
 
     # O primeiro parametro das instâncias abaixo corresponde a label do formulário
-    email = StringField('E-mail', validators=[DataRequired()])
-    senha = PasswordField('Senha', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired(message="O e-mail é obrigatório.")])
+    senha = PasswordField('Senha', validators=[DataRequired(message="A senha é obrigatória")])
     lembrar_me = BooleanField('Lembrar Me')
     entrar = SubmitField('Entrar')
 
 class CadastrarUsuario(FlaskForm):
-    nome = StringField('Nome', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
-    senha = PasswordField('Senha', validators=[DataRequired()])
+    nome = StringField('Nome', validators=[DataRequired(message="O nome é obrigatório.")])
+    email = StringField('E-mail', validators=[
+        DataRequired(message="O e-mail é obrigatório."), 
+        Email(message="Digite um e-mail válido.")
+    ])
+    senha = PasswordField('Senha', validators=[DataRequired(message="A senha é obrigatória.")])
     confirmar_senha = PasswordField('Confirmação de senha', 
         validators=[
-            DataRequired(),
-            EqualTo('senha')
+            DataRequired(message="A confirmação de senha é obrigatória."),
+            EqualTo('senha', message="As senhas não coincidem.")
         ]
     )
     cadastrar = SubmitField('Cadastrar')
@@ -41,9 +44,8 @@ class CadastrarUsuario(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado por outro usuário!')
 
 class EditarPerfilUsuario(FlaskForm):
-    nome = StringField('Nome de usuário', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
-
+    nome = StringField('Nome de usuário', validators=[DataRequired(message="O nome é obrigatório.")])
+    email = StringField('E-mail', validators=[DataRequired(), Email(message="O e-mail é obrigatório.")])
     editar = SubmitField('Editar')
 
     def __init__(self, email_original, *args, **kwargs):
@@ -58,9 +60,9 @@ class EditarPerfilUsuario(FlaskForm):
 
 
 class CadastrarBarbeiro(FlaskForm):
-    nome = StringField('Nome', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
-    senha = PasswordField('Senha', validators=[DataRequired()])
+    nome = StringField('Nome', validators=[DataRequired(message="O nome é obrigatório.")])
+    email = StringField('E-mail', validators=[DataRequired(message="O e-mail é obrigatório."), Email()])
+    senha = PasswordField('Senha', validators=[DataRequired(message="A senha é obrigatória.")])
 
     cadastrar = SubmitField('Cadastrar')
 
@@ -70,9 +72,8 @@ class CadastrarBarbeiro(FlaskForm):
             raise ValidationError('O e-mail inserido já está sendo usado!')
 
 class EditarPerfilBarbeiro(FlaskForm):
-    nome = StringField('Nome de usuário', validators=[DataRequired()])
-    email = StringField('E-mail', validators=[DataRequired(), Email()])
-
+    nome = StringField('Nome de usuário', validators=[DataRequired(message="O nome é obrigatório.")])
+    email = StringField('E-mail', validators=[DataRequired(message="O e-mail é obrigatório."), Email()])
     editar = SubmitField('Editar')
 
     def __init__(self, email_original, *args, **kwargs):
@@ -90,7 +91,7 @@ class AlterarSenhaBarbeiro(FlaskForm):
     nova_senha = PasswordField('Nova senha', validators=[DataRequired()])
     confirmar_senha = PasswordField('Confirmar nova senha', 
         validators=[
-            DataRequired(),
+            DataRequired(message="É necessário confirmar a senha."),
             EqualTo('nova_senha')
         ]
     )

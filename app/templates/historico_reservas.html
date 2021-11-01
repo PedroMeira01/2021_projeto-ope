@@ -12,7 +12,7 @@
 
             <div class="col-12 historic__card">
 
-                <div class="col-12 px-0 d-flex">
+                <!-- <div class="col-12 px-0 d-flex">
 
                     <div class="col-3">
                         <select class="w-100" name="" id="">
@@ -45,13 +45,17 @@
                     <h3>Mostrar</h3>
                     <input type="number" name="" id="">
                     <label for="">Agendamentos</label>
-                </div>
+                </div> -->
 
                 <div class="col-12 d-flex flex-wrap">
 
                     {% for reserva in reservas %}
                         <div class="d-flex pl-0 historic__status">
-                            <div class="col-3 bgc-yellow d-flex flex-column align-items-center justify-content-center">
+                            {% if reserva['retroativa'] %}
+                            <div class="col-3 bgc-gray2 d-flex flex-column align-items-center justify-content-center">
+                            {% else %}
+                            <div class="col-3 bgc-green d-flex flex-column align-items-center justify-content-center">
+                            {% endif %}
                                 <h2 class="c-white">{{reserva.data}}</h2>
                                 <h3 class="c-white">{{reserva.hora}}</h3>
                             </div>
