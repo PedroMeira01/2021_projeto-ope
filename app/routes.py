@@ -308,10 +308,6 @@ def sucesso():
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
 def admin():
-    return render_template('admin/admin.html')
-
-@app.route('/agendamentos')
-def agenda_barbeiro():
     return render_template('admin/agendamentos.html')
 
 @app.route('/funcionarios')

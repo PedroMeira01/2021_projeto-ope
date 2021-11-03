@@ -86,3 +86,34 @@ function bloqueiaDatasRetroativas() {
 
     return [ano, mes, dia].join('-');
 }
+
+function verificaHorarios() {
+	let radios = document.querySelectorAll('.form__radio-input');
+	let preenchido = false;
+	let alerta = document.querySelector('#alerta');
+
+	for (const el of radios) {
+		if (el.checked) {
+			preenchido = true;
+		}	
+	}
+
+	if (!preenchido) {
+		let $html = 
+		`<div class="alert danger">
+			<div class="separator">
+				<strong>Preencha um horário</strong>
+			</div>
+			<span class="closebtn">&times;</span>
+		</div>`
+
+		alerta.innerHTML = $html;
+	}
+
+	document.querySelector('.closebtn').addEventListener('click', function() {
+		alerta.removeChild(document.querySelector('.alert'));
+	});
+
+	window.scrollTo(0,0)
+
+}

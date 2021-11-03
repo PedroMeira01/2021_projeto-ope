@@ -82,17 +82,18 @@
             {% if session['id_barbeiro'] %}
             <nav class="menu__side">
                 <ul>
+
+                    <a href="{{ url_for('admin') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/historico.png" alt="">
+                            <p class="d-block c-white mt-3">Dashboard</p>
+                        </li>
+                    </a>
+
                     <a href="{{ url_for('listagem_funcionarios') }}">
                         <li class="mt-5">
                             <img src="../static/img/icon/historico.png" alt="">
                             <p class="d-block c-white mt-3">Funcionarios</p>
-                        </li>
-                    </a>
-
-                    <a href="{{ url_for('historico_reservas') }}">
-                        <li class="mt-5">
-                            <img src="../static/img/icon/historico.png" alt="">
-                            <p class="d-block c-white mt-3">Dashboard</p>
                         </li>
                     </a>
 

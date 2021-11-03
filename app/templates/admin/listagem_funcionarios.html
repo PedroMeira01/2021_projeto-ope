@@ -37,15 +37,16 @@
                         </div>
 
                         <div class="col-3">
-                            <h2 class="c-brown">Opções</h2>
+                            <h2 class="c-brown">Ações</h2>
                         </div>
 
                     </div>
 
+                    {% for b in barbeiros %}
                     <div class="col-12 px-4 py-3 my-4 d-flex align-items-center bgc-gray3">
 
                         <div class="col-3">
-                            <h3 class="c-black">Vinícius Dias</h3>
+                            <h3 class="c-black">{{b.nome}}</h3>
                         </div>
                         
                         <div class="col-3">
@@ -61,8 +62,8 @@
                             </div> -->
 
                             <div class="col-7 px-0">
-                                <button class="bgc-red2 btn__pattern py-2 px-4 d-flex align-items-center justify-content-center" type="submit">
-                                    <p class="m-0 p-0">Excluir</p>
+                                <button class="bgc-blue btn__pattern py-2 px-4 d-flex align-items-center justify-content-center" type="submit" data-barbeiro="{{b.id_barbeiro}}">
+                                    <p class="m-0 p-0">Bloquear</p>
                                     <img src="../static/img/icon/excluir.svg" alt="" class="u-img-delete ml-2">
                                 </button>
                             </div>
@@ -70,6 +71,7 @@
                         </div>
 
                     </div>
+                    {% endfor %}
 
                 </div>
 
