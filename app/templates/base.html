@@ -121,10 +121,41 @@
             </nav>
             {% endif %}
 
+            <nav class="home__menu bgc-brown d-none d-xl-block">
+
+                <div class="container-fluid h-100">
+
+                    <div class="row h-100">
+
+                        <div class="col-6 d-flex align-items-center" style="padding-left: 100px">
+                            <img src="../static/img/icon/tesoura.svg" alt="">
+                        </div>
+                
+                
+                        <ul class="col-6 mb-0 d-flex align-items-center">
+
+                            <li class="col-4 text-right">
+                                <a class="home__menu--items" href="">Serviços</a>
+                            </li>
+                            
+                            <li class="col-4 text-center">
+                                <a class="home__menu--items" href="">Contato</a>
+                            </li>
+            
+                            <li class="col-4">
+                                <button class="bgc-red2 btn__pattern">Login</button>
+                            </li>
+
+                        </ul> 
+    
+                    </div>
+
+                </div>
+        
+            </nav>
+
             {% block content %}{% endblock %}
         </main>
-        <footer>
-        </footer>
         
         <script src="static/js/script.js"></script>
         <!-- Bootstrap 4 - JS/Jquery -->

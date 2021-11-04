@@ -304,6 +304,10 @@ def notfound():
 def sucesso():
     return render_template('/sucesso.html')
 
+@app.route('/home')
+def home():
+    return render_template('/home.html')
+
 
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
