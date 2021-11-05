@@ -312,7 +312,11 @@ def home():
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
 def admin():
-    return render_template('admin/agendamentos.html')
+    id_barbeiro = session['id_barbeiro']
+    reservas = Reserva()
+    reservas = reservas.reservas_por_barbeiro(id_barbeiro)
+
+    return render_template('admin/agendamentos.html', reservas=reservas)
 
 @app.route('/funcionarios')
 def listagem_funcionarios():

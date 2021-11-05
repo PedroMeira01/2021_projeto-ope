@@ -76,3 +76,18 @@ class Reserva(db.Model):
                 .all()
 
         return reservas
+
+    def reservas_por_barbeiro(self, barbeiro_id):
+        reservas = Reserva.query\
+            .join(Usuario, Reserva.usuario_id==Usuario.id)\
+            .join(Servico, Reserva.servico_id==Servico.id_servico)\
+            .add_columns(
+                Reserva.id_reserva,
+                Reserva.data,
+                Usuario.nome.label('cliente'),
+                Servico.nome.label('servico')
+            )\
+            .filter(Reserva.barbeiro_id == barbeiro_id)\
+            .order_by(desc(Reserva.data))\
+            .all()
+        return reservas

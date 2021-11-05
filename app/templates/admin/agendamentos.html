@@ -49,75 +49,21 @@
                     <label for="">Agendamentos</label>
                 </div> -->
 
+                {% for r in reservas %}
                 <div class="col-12 d-flex mt-5">
 
                     <div class="col-2 py-4 bgc-yellow d-flex justify-content-center">
-                        <h2 class="c-white text-center">Nº 052021</h2>
+                        <h2 class="c-white text-center">Nº {{r.id_reserva}}</h2>
                     </div>
 
                     <div class="col-10 d-flex justify-content-around align-items-center">
-                        <h2>15/11/2021</h2>
-                        <h2>Barbeiro 1</h2>
-                        <h2>Pedro Henrique</h2>
+                        <h2>{{r.data}}</h2>
+                        <h2>{{r.servico}}</h2>
+                        <h2>{{r.cliente}}</h2>
                     </div>
 
                 </div>
-
-                <div class="col-12 d-flex mt-5">
-
-                    <div class="col-2 py-4 bgc-green d-flex justify-content-center">
-                        <h2 class="c-white text-center">Nº 052021</h2>
-                    </div>
-
-                    <div class="col-10 d-flex justify-content-around align-items-center">
-                        <h2>15/11/2021</h2>
-                        <h2>Barbeiro 2</h2>
-                        <h2>Matheus Rocha</h2>
-                    </div>
-
-                </div>
-
-                <div class="col-12 d-flex mt-5">
-
-                    <div class="col-2 py-4 bgc-green d-flex justify-content-center">
-                        <h2 class="c-white text-center">Nº 052021</h2>
-                    </div>
-
-                    <div class="col-10 d-flex justify-content-around align-items-center">
-                        <h2>15/11/2021</h2>
-                        <h2>Barbeiro 3</h2>
-                        <h2>Daniel Souza</h2>
-                    </div>
-
-                </div>
-
-                <div class="col-12 d-flex mt-5">
-
-                    <div class="col-2 py-4 bgc-red d-flex justify-content-center">
-                        <h2 class="c-white text-center">Nº 052021</h2>
-                    </div>
-
-                    <div class="col-10 d-flex justify-content-around align-items-center">
-                        <h2>15/11/2021</h2>
-                        <h2>Barbeiro 4</h2>
-                        <h2>Luiz Gomes</h2>
-                    </div>
-
-                </div>
-
-                <div class="col-12 d-flex mt-5">
-
-                    <div class="col-2 py-4 bgc-yellow d-flex justify-content-center">
-                        <h2 class="c-white text-center">Nº 052021</h2>
-                    </div>
-
-                    <div class="col-10 d-flex justify-content-around align-items-center">
-                        <h2>15/11/2021</h2>
-                        <h2>Barbeiro 5</h2>
-                        <h2>Alberto Lima</h2>
-                    </div>
-
-                </div>
+                {% endfor %}
 
             </div>
 
