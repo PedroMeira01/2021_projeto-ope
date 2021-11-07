@@ -63,10 +63,21 @@
                             <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
                                 <h2>{{reserva.barbeiro}}</h2>
                                 <p>Serviço: {{reserva.servico}}</p>
-                                <!-- <span class="c-yellow historic__status--message">Pendente</span> -->
+                                {% if not reserva['retroativa'] %}
+                                <a href="{{ url_for('desmarcar', id=reserva.id) }}">
+                                    <span class="c-red2 historic__status--message">Cancelar</span>
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
+
+                    {% if prev_url %}
+                    <a href="{{ prev_url }}">Anterior</a>
+                    {% endif %}
+                    {% if next_url %}
+                    <a href="{{ next_url }}">Próximo</a>
+                    {% endif %}
 
                 </div>
 

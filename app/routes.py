@@ -148,12 +148,21 @@ def historico_reservas():
     usuario_id = session['id_usuario']
 
     reservas = Reserva()
-    reservas = reservas.reservas_por_cliente(usuario_id)
-    lista_reservas = []
+    page = request.args.get('page', 1, type=int)
+    reservas = reservas.reservas_por_cliente(usuario_id).paginate(
+        page, 6, False
+    )
 
-    for reserva in reservas:
+    next_url = url_for('historico_reservas', page=reservas.next_num) \
+        if reservas.has_next else None
+    prev_url = url_for('historico_reservas', page=reservas.prev_num) \
+        if reservas.has_prev else None
+
+    lista_reservas = []
+    for reserva in reservas.items:
         retroativa = reserva.data < date.today()
         r = {
+                "id": reserva.id_reserva,
                 "data": reserva.data.strftime("%d/%m/%Y"), 
                 "hora": reserva.hora.strftime("%H:%M"), 
                 "barbeiro": reserva.barbeiro, 
@@ -161,11 +170,23 @@ def historico_reservas():
                 "retroativa": retroativa
             }
         lista_reservas.append(r)
+
     return render_template(
-            'historico_reservas.html', 
-            titulo='Histórico de Reservas', 
-            reservas=lista_reservas,
-        )
+        'historico_reservas.html', 
+        titulo='Histórico de Reservas', 
+        reservas=lista_reservas,
+        next_url=next_url,
+        prev_url=prev_url
+    )
+
+@app.route('/desmarcar_reserva/<id>')
+def desmarcar(id):
+    reserva = Reserva.query.filter_by(id_reserva=id).first()
+    db.session.delete(reserva)
+    db.session.commit()
+
+    flash('Sua reserva foi cancelada com sucesso', 'success')
+    return redirect(url_for('historico_reservas'))
 
 
 # AUTENTICAÇÃO  -----------------------------------------
@@ -261,7 +282,7 @@ def editar_perfil(id):
                 
                 flash('Suas informações foram editadas com sucesso!','success')
 
-                return redirect(url_for('editar_perfil', id=id))
+                return redirect(url_for('editar_perfil', id=session['id_usuario']))
 
             elif request.method == 'GET':
                 form.nome.data = usuario.nome
@@ -269,7 +290,7 @@ def editar_perfil(id):
 
             return render_template('editar_perfil_usuario.html', titulo='Editar perfil', form=form)
         # Se tentar editar o perfil de outro usuário
-        return redirect(url_for('editar_perfil', id=id))
+        return redirect(url_for('editar_perfil', id=session['id_usuario']))
     else:
         flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login'))
@@ -280,7 +301,6 @@ def alterar_senha(id):
         if session['id_usuario'] == int(id):
 
             form = AlterarSenhaUsuario(id)
-
             if form.validate_on_submit():
                 usuario = Usuario.query.filter_by(id=id).first()
                 usuario.criptografar_senha(form.nova_senha.data)
@@ -296,27 +316,35 @@ def alterar_senha(id):
         flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
 
-@app.route('/404')
-def notfound():
-    return render_template('erros/404.html')
-
-@app.route('/sucesso')
-def sucesso():
-    return render_template('/sucesso.html')
-
-@app.route('/home')
-def home():
-    return render_template('/home.html')
+# @app.route('/sucesso')
+# def sucesso():
+#     return render_template('/sucesso.html')
 
 
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
 def admin():
     id_barbeiro = session['id_barbeiro']
-    reservas = Reserva()
-    reservas = reservas.reservas_por_barbeiro(id_barbeiro)
 
-    return render_template('admin/agendamentos.html', reservas=reservas)
+    page = request.args.get('page', 1, type=int)
+    
+    reservas = Reserva()
+
+    reservas = reservas.reservas_por_barbeiro(id_barbeiro).paginate(
+        page, 2, False
+    )
+
+    next_url = url_for('admin', page=reservas.next_num) \
+        if reservas.has_next else None
+    prev_url = url_for('admin', page=reservas.prev_num) \
+        if reservas.has_prev else None
+
+    return render_template(
+        'admin/agendamentos.html', 
+        reservas=reservas.items,
+        next_url=next_url,
+        prev_url=prev_url
+    )
 
 @app.route('/funcionarios')
 def listagem_funcionarios():
@@ -353,7 +381,6 @@ def editar_perfil_barbeiro(id):
             barbeiro = Barbeiro.query.filter_by(id_barbeiro=id).first()
             
             form = EditarPerfilBarbeiro(barbeiro.email)
-
             if form.validate_on_submit():
                 barbeiro.nome = form.nome.data
                 barbeiro.email = form.email.data
@@ -363,7 +390,7 @@ def editar_perfil_barbeiro(id):
                 
                 flash('Suas informações foram editadas com sucesso!','success')
 
-                return redirect(url_for('editar_perfil_barbeiro', id=id))
+                return redirect(url_for('editar_perfil_barbeiro', id=session['id_barbeiro']))
 
             elif request.method == 'GET':
                 form.nome.data = barbeiro.nome
@@ -371,7 +398,7 @@ def editar_perfil_barbeiro(id):
 
             return render_template('admin/editar_perfil_barbeiro.html', titulo='Editar perfil', form=form)
         # Se tentar editar o perfil de outro usuário
-        return redirect(url_for('editar_perfil_barbeiro', id=id))
+        return redirect(url_for('editar_perfil_barbeiro', id=session['id_barbeiro']))
     else:
         flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
@@ -382,7 +409,6 @@ def alterar_senha_barbeiro(id):
         if session['id_barbeiro'] == int(id):
 
             form = AlterarSenhaBarbeiro(id)
-
             if form.validate_on_submit():
                 barbeiro = Barbeiro.query.filter_by(id_barbeiro=id).first()
                 barbeiro.criptografar_senha(form.nova_senha.data)
@@ -393,8 +419,19 @@ def alterar_senha_barbeiro(id):
             
             return render_template('admin/alterar_senha.html', form=form)
 
-        return redirect(url_for('alterar_senha', id=session['id_barbeiro']))
+        return redirect(url_for('alterar_senha_barbeiro', id=session['id_barbeiro']))
+
     else:
         flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
         
+
+# OUTRAS ------------------------------------------------------------
+
+@app.route('/404')
+def notfound():
+    return render_template('erros/404.html')
+
+@app.route('/home')
+def home():
+    return render_template('/home.html')

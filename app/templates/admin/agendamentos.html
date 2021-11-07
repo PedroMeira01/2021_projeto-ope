@@ -63,8 +63,14 @@
                     </div>
 
                 </div>
+                
                 {% endfor %}
-
+                {% if prev_url %}
+                <a href="{{ prev_url }}">Anterior</a>
+                {% endif %}
+                {% if next_url %}
+                <a href="{{ next_url }}">Próximo</a>
+                {% endif %}
             </div>
 
             <div class="col-5 mt-5">

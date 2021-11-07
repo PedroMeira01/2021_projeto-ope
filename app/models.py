@@ -65,15 +65,15 @@ class Reserva(db.Model):
                 .join(Usuario, Reserva.usuario_id==Usuario.id)\
                 .join(Barbeiro, Reserva.barbeiro_id==Barbeiro.id_barbeiro)\
                 .join(Servico, Reserva.servico_id==Servico.id_servico)\
-                .add_columns( 
+                .add_columns(
+                    Reserva.id_reserva,
                     Reserva.data,
                     Reserva.horario_inicio.label('hora'),
                     Barbeiro.nome.label('barbeiro'), 
                     Servico.nome.label('servico')
                 )\
                 .filter(Reserva.usuario_id == usuario_id)\
-                .order_by(desc(Reserva.data))\
-                .all()
+                .order_by(desc(Reserva.data))
 
         return reservas
 
@@ -88,6 +88,5 @@ class Reserva(db.Model):
                 Servico.nome.label('servico')
             )\
             .filter(Reserva.barbeiro_id == barbeiro_id)\
-            .order_by(desc(Reserva.data))\
-            .all()
+            .order_by(desc(Reserva.data))
         return reservas
