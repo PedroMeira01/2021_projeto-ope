@@ -11,6 +11,7 @@ $black: #0e0e0e;
 $gray: #a4a4a4;
 $gray2: #cecece;
 $gray3: #f0f0f0;
+$gray4: #535353;
 
 $green: #18b14b;
 
@@ -57,6 +58,7 @@ $black-full: #000;
 @include defineColor('gray', $gray);
 @include defineColor('gray2', $gray2);
 @include defineColor('gray3', $gray3);
+@include defineColor('gray4', $gray4);
 @include defineColor('green', $green);
 @include defineColor('yellow', $yellow);
 @include defineColor('blue', $blue);
