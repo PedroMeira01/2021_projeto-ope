@@ -65,7 +65,7 @@
                                 <p>Serviço: {{reserva.servico}}</p>
                                 {% if not reserva['retroativa'] %}
                                 <a href="{{ url_for('desmarcar', id=reserva.id) }}">
-                                    <span class="c-red2 historic__status--message">Cancelar</span>
+                                    <span class="badge badge-secondary">Cancelar</span>
                                 </a>
                                 {% endif %}
                             </div>
