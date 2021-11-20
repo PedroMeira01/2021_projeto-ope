@@ -61,12 +61,21 @@
                                 </button>
                             </div> -->
 
+                            {% if b.id_barbeiro != session['id_barbeiro'] %}
                             <div class="col-7 px-0">
-                                <button class="bgc-blue btn__pattern py-2 px-4 d-flex align-items-center justify-content-center" type="submit" data-barbeiro="{{b.id_barbeiro}}">
+                                {% if b.status_bloqueio == 1 %}
+                                <button id="btn-bloquear" class="bgc-blue btn__pattern py-2 px-4 d-flex align-items-center justify-content-center" type="submit" data-barbeiro="{{b.id_barbeiro}}" onclick="bloquearFuncionario(this)">
+                                    <p class="m-0 p-0">Desbloquear</p>
+                                    <img src="../static/img/icon/excluir.svg" alt="" class="u-img-delete ml-2">
+                                </button>
+                                {% else %}
+                                <button id="btn-bloquear" class="bgc-blue btn__pattern py-2 px-4 d-flex align-items-center justify-content-center blocked" type="submit" data-barbeiro="{{b.id_barbeiro}}" onclick="bloquearFuncionario(this)">
                                     <p class="m-0 p-0">Bloquear</p>
                                     <img src="../static/img/icon/excluir.svg" alt="" class="u-img-delete ml-2">
                                 </button>
+                                {% endif %}
                             </div>
+                            {% endif %}
                             
                         </div>
 

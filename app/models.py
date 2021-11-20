@@ -26,6 +26,7 @@ class Barbeiro(db.Model):
     nome = db.Column(db.String(100), index=True)
     email = db.Column(db.String(100), index=True, unique=True)
     senha = db.Column(db.String(128))
+    status_bloqueio = db.Column(db.Boolean, default=0)
 
     atendimentos = db.relationship('Reserva', backref='barbeiro', lazy='dynamic')
 

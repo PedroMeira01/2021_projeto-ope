@@ -117,3 +117,30 @@ function verificaHorarios() {
 	window.scrollTo(0,0)
 
 }
+
+function bloquearFuncionario(btn) {
+	const id_barbeiro = btn.getAttribute('data-barbeiro');
+	const xhr = new XMLHttpRequest();
+	const url = '/bloquear_funcionario';
+	const params = `?id_barbeiro=${id_barbeiro}`;
+
+	xhr.onload = e => {
+		if (xhr.status === 200) {
+			const resultado = xhr.response;
+
+			if (resultado == 'True') {
+				btn.classList.remove('blocked');
+				btn.firstElementChild.textContent = 'Desbloquear'
+			} else if (resultado == 'False') {
+				btn.classList.add('blocked');
+				btn.firstElementChild.textContent = 'Bloquear'
+			}
+
+		} else if (xhr.status >= 400) {
+			alert('Ocorreu um erro desconhecido!');
+		}
+	}
+
+	xhr.open("GET", url + params, true);
+	xhr.send();
+}

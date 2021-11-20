@@ -222,6 +222,10 @@ def login_admin():
     if form.validate_on_submit():
         # Busca usuário com credenciais compátiveis a recebida
         barbeiro = Barbeiro.query.filter_by(email=form.email.data).first()
+        # raise Exception(barbeiro.status_bloqueio)
+        if barbeiro.status_bloqueio == True:
+            flash('Usuário bloqueado.','danger')
+            return redirect(url_for('login_admin'))
         
         if barbeiro is None or not barbeiro.checar_senha(form.senha.data):
             flash('E-mail ou senha inválido(s).','danger')
@@ -425,6 +429,25 @@ def alterar_senha_barbeiro(id):
         flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
         
+@app.route('/bloquear_funcionario')
+def bloquear_funcionario():
+    id_barbeiro = request.args.get('id_barbeiro')
+    barbeiro = Barbeiro.query.filter_by(id_barbeiro=id_barbeiro).first()
+
+    if barbeiro.status_bloqueio != 1:
+        barbeiro.status_bloqueio = 1
+    else:
+        barbeiro.status_bloqueio = 0
+
+    db.session.add(barbeiro)
+    db.session.commit()
+
+    return str(barbeiro.status_bloqueio)
+
+
+
+    
+
 
 # OUTRAS ------------------------------------------------------------
 
