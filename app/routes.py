@@ -1,14 +1,19 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from app import app, db
 from app.forms import EditarPerfilUsuario, LoginForm, CadastrarUsuario,\
-CadastrarBarbeiro, EditarPerfilBarbeiro, AlterarSenhaBarbeiro, AlterarSenhaUsuario
+CadastrarBarbeiro, EditarPerfilBarbeiro, AlterarSenhaBarbeiro, AlterarSenhaUsuario,\
+RecuperarSenhaUsuario
 from app.models import Usuario, Barbeiro, Servico, Reserva
+from app.email import enviar_email_recuperacao_senha, enviar_email_recuperacao_senha_barbeiro
 from datetime import datetime, timedelta, time, date
 import json
 
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template("home.html", title="Início")
 
 # RESERVAS -------------------------------------------------
-@app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     """ Tela de agendamento """
@@ -320,10 +325,26 @@ def alterar_senha(id):
         flash('Por favor, faça o login para acessar esta página.','info')
         return redirect(url_for('login_admin'))
 
-# @app.route('/sucesso')
-# def sucesso():
-#     return render_template('/sucesso.html')
+@app.route('/recuperar_senha', methods=['GET', 'POST'])
+def recuperar_senha():
+    if 'id_usuario' in session:
+        return redirect(url_for('index'))
+    elif 'id_barbeiro' in session:
+        return redirect(url_for('admin'))
 
+    form = RecuperarSenhaUsuario()
+    if form.validate_on_submit():
+        usuario = Usuario.query.filter_by(email=form.email.data).first()
+        if usuario:
+            nova_senha = enviar_email_recuperacao_senha(usuario)
+            usuario.criptografar_senha(nova_senha)
+            db.session.add(usuario)
+            db.session.commit()
+
+        flash('Enviamos um e-mail para o endereço inserido.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('redefinir_senha.html', form=form)
 
 # BARBEIROS ------------------------------------------
 @app.route('/admin')
@@ -335,7 +356,7 @@ def admin():
     reservas = Reserva()
 
     reservas = reservas.reservas_por_barbeiro(id_barbeiro).paginate(
-        page, 2, False
+        page, 5, False
     )
 
     next_url = url_for('admin', page=reservas.next_num) \
@@ -444,17 +465,28 @@ def bloquear_funcionario():
 
     return str(barbeiro.status_bloqueio)
 
+@app.route('/recuperar_senha_barbeiro', methods=['GET', 'POST'])
+def recuperar_senha_barbeiro():
+    if 'id_usuario' in session:
+        return redirect(url_for('index'))
+    elif 'id_barbeiro' in session:
+        return redirect(url_for('admin'))
 
+    form = RecuperarSenhaUsuario()
+    if form.validate_on_submit():
+        barbeiro = Barbeiro.query.filter_by(email=form.email.data).first()
+        if barbeiro:
+            nova_senha = enviar_email_recuperacao_senha_barbeiro(barbeiro)
+            barbeiro.criptografar_senha(nova_senha)
+            db.session.add(barbeiro)
+            db.session.commit()
 
-    
+        flash('Enviamos um e-mail para o endereço inserido.', 'success')
+        return redirect(url_for('login'))
 
-
+    return render_template('redefinir_senha.html', form=form)
 # OUTRAS ------------------------------------------------------------
 
 @app.route('/404')
 def notfound():
     return render_template('erros/404.html')
-
-@app.route('/home')
-def home():
-    return render_template('/home.html')

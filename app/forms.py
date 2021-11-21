@@ -127,3 +127,7 @@ class AlterarSenhaUsuario(FlaskForm):
         usuario = Usuario.query.filter_by(id=self.id).first()
         if not usuario.checar_senha(senha_atual.data):
             raise ValidationError('A senha atual está incorreta.')
+
+class RecuperarSenhaUsuario(FlaskForm):
+    email = StringField('E-mail', validators=[DataRequired(message="O e-mail é obrigatório."), Email()])
+    enviar = SubmitField('Enviar')

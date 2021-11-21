@@ -1,0 +1,11 @@
+Caro(a), {{ usuario.nome }},
+
+Utilize a senha temporária abaixo para acessar a sua conta:
+
+{{senha}}.
+
+É importante que redefina sua senha assim que realizar o acesso.
+
+Atenciosamente,
+
+Suporte de TI da barbearia.

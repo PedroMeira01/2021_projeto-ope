@@ -1,6 +1,8 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import desc
+import string    
+import random
 
 class Usuario(db.Model):
     # Para que o FlaskLogin funcione, a PK do usuário deve ter o nome "id" apenas.
@@ -19,7 +21,12 @@ class Usuario(db.Model):
 
     def checar_senha(self, senha):
         return check_password_hash(self.senha, senha)
+    
+    def gerar_senha_temporaria(self):
+        str_size = 5  
+        nova_senha = str(''.join(random.choices(string.ascii_uppercase + string.digits, k = str_size)))
 
+        return nova_senha
 
 class Barbeiro(db.Model):
     id_barbeiro = db.Column(db.Integer, primary_key=True)
@@ -38,6 +45,12 @@ class Barbeiro(db.Model):
 
     def checar_senha(self, senha):
         return check_password_hash(self.senha, senha)
+
+    def gerar_senha_temporaria(self):
+        str_size = 5  
+        nova_senha = str(''.join(random.choices(string.ascii_uppercase + string.digits, k = str_size)))
+
+        return nova_senha
 
 class Servico(db.Model):
     id_servico = db.Column(db.Integer, primary_key=True)
