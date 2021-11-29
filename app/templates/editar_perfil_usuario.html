@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section id="profile">
+      <h2 class="internal-title">Perfil</h2>
+    <div class="profile-form-area">
+        <h3> Editar informações pessoais </h3>
+        <form action="{{ url_for('editar_perfil', id=session['id_usuario']) }}" method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.nome.label() }} 
+            {{ form.nome() }} 
+            {% for error in form.nome.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.email.label() }} 
+            {{ form.email() }} 
+            {% for error in form.email.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr>
+            {{ form.editar(onclick="return confirm('Tem certeza que deseja editar suas informações pessoais?')") }}
+        </form>
+    </div>
+            
+            <a href="#" onclick="history.go(-1)" class="btn btn-primary btn-lg">Voltar</a>
+    </section>
+{% endblock %}

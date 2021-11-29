@@ -1,0 +1,46 @@
+.dashboard {
+  &__card {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-around; 
+    height: 100%;
+    margin-top: 50px;
+    padding: 20px 0px; 
+    box-shadow: 0 0 1rem #00000045; 
+
+    &--graphic {
+      width: 100px;
+    }
+
+    &--numbers {
+
+      span {
+        font-size: 60px;
+        font-weight: bold;
+      }
+
+      h3 {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+    }
+
+    &--values {
+      background-color: #f6f6f6; 
+      padding: 30px 20px;
+      margin-top: 20px;
+
+      & h2 {
+        font-weight: bold; 
+        text-transform: uppercase; 
+        font-size: 16px;
+      }
+
+      & span {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+}

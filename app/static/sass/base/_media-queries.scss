@@ -1,0 +1,9 @@
+@media (max-width: 1440px) {
+    .menu__side {
+        width: 75px;
+
+        & ul li img {
+            width: 25px;
+        }
+    }
+}

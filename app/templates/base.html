@@ -1,35 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ titulo }}</title>
-</head>
-<body>
-    <header>
-        <div>
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('logout') }}">Sair</a>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{titulo}}</title>
+
+        <!-- Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;700;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+        <!-- Bootstrap 4 - CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="/static/css/main.min.css">
+    </head>
+    <body>
+        <header>
+        </header>
+        <main>
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+            messages %} {% for category, message in messages %}
+            <div class="alert {{category}}">
+              <div class="separator">
+                <img
+                  src="../static/img/icon/{{category}}.svg"
+                  class="icon"
+                  alt="icon"
+                />
+                <strong>{{ message }}</strong>
+              </div>
+              <span class="closebtn">&times;</span>
+            </div>              
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <!-- Menu lateral -->
+            {% if session['id_usuario'] %}
+            <nav class="menu__side">
+                <ul>
+                    <a href="{{ url_for('index') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/calendario.png" alt="">
+                            <p class="d-block c-white mt-3">Agendar</p>
+                        </li>
+                    </a>
+                
+                    <a href="{{ url_for('historico_reservas') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/historico.png" alt="">
+                            <p class="d-block c-white mt-3">Histórico</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('editar_perfil', id=session['id_usuario']) }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Perfil</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('alterar_senha', id=session['id_usuario']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Alterar senha</p>
+                        </li>
+                    </a>
+                
+                    <a href="{{ url_for('logout') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/sair.png" alt="">
+                            <p class="d-block c-white mt-3">Sair</p>
+                        </li>
+                    </a>
+                </ul>
+            </nav>
             {% endif %}
-        </div>
-    </header>
-    <main>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
+
+            {% if session['id_barbeiro'] %}
+            <nav class="menu__side">
+                <ul>
+
+                    <a href="{{ url_for('admin') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/dashboard.svg" alt="">
+                            <p class="d-block c-white mt-3">Dashboard</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('listagem_funcionarios') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/funcionarios.svg" alt="">
+                            <p class="d-block c-white mt-3">Funcionarios</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('editar_perfil_barbeiro', id=session['id_barbeiro']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Perfil</p>
+                        </li>
+                    </a>
+
+                    <a href="{{ url_for('alterar_senha_barbeiro', id=session['id_barbeiro']) }}">
+                        <li>
+                            <img src="../static/img/icon/usuario-branco.png" alt="">
+                            <p class="d-block c-white mt-3">Alterar senha</p>
+                        </li>
+                    </a>
+                
+                    <a href="{{ url_for('logout') }}">
+                        <li class="mt-5">
+                            <img src="../static/img/icon/sair.png" alt="">
+                            <p class="d-block c-white mt-3">Sair</p>
+                        </li>
+                    </a>
+                </ul>
+            </nav>
             {% endif %}
-        {% endwith %}
-        {% block content %}
-        {% endblock %}
-    </main>
-    <footer></footer>
-</body>
+
+            {% block content %}{% endblock %}
+        </main>
+        
+        <script src="static/js/script.js"></script>
+        <!-- Bootstrap 4 - JS/Jquery -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+        <script>
+          var close = document.getElementsByClassName("closebtn");
+          var i;
+        
+          for (i = 0; i < close.length; i++) {
+            close[i].onclick = function () {
+             var div = this.parentElement;
+              div.style.opacity = "0";
+               setTimeout(function () {
+                div.style.display = "none";
+              }, 600);
+            };
+          }
+        </script>    
+    </body>
+    
 </html>

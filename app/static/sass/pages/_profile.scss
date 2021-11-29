@@ -1,0 +1,45 @@
+#profile {
+  padding: 5rem 20rem;
+}
+
+.profile-form-area {
+  width: 45rem;
+  margin: 2.7rem auto 0;
+
+  & h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  & input {
+    width: 100%;
+    padding: 5px 0;
+    border: none;
+    font-size: 1.7rem;
+    outline: none;
+  
+    &[type=submit] {
+        display: block;
+        width: 25rem;
+        background-color: #f40000;
+        color: #FFF;
+        padding: 1rem;
+        margin: 3.5rem auto 0;
+        border-radius: .5rem;
+        font-weight: bold;
+        cursor: pointer
+    }
+  
+  }
+
+  & label {
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    color: #a4a4a4;
+  }
+  
+  & hr {
+    margin: 5px 0 0;
+  }
+
+}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section>
+
+  <div class="container">
+
+    <div class="row align-items-center" style="height: 100vh;">
+
+      <div class="col-8">
+
+        <img class="img-fluid" src="../../static/img/sucesso.png" alt="">
+
+      </div>
+
+      <div class="col-4">
+
+        <h1 class="c-red" style="font-size: 70px; font-weight: 600;">
+          SUCESSO!
+        </h1>
+
+        <h2 style="font-size: 25px;">O seu horário foi agendado.</h2>
+
+        <div class="col-12 d-flex px-0 justify-content-end mt-4">
+          <a href="{{ url_for('index') }}">
+            <button class="bgc-red2 btn__pattern">Confirmar</button>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

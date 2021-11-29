@@ -1,0 +1,32 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  // Defini quanto é 1rem
+  font-size: 62.5%; //1rem = 10px, 10/16 = 62.5%
+}
+
+body {
+  box-sizing: border-box;
+}
+
+section {
+  padding-top: 30px;
+  
+  @include respond(big-desktop) {
+    padding-top: 100px;
+  }
+}
+
+a:hover {
+  text-decoration: none !important;
+}
+
+ul li {
+  list-style-type: none;
+}

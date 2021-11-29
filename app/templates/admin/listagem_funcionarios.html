@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-12 px-0">
+                <h1 class="c-brown section__title u-title-after">Funcionários</h1>
+            </div>
+
+            <div class="col-12 historic__card p-5">
+
+                <div class="col-12 px-0 d-flex">
+
+                    <div class="col-1">
+                        <a href="{{url_for('cadastrar_barbeiro')}}">
+                            <button class="bgc-blue btn__pattern" type="submit">
+                                <img src="../static/img/icon/add_funcionario.svg" alt="" class="img-fluid">
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-12 px-0 employees__card">
+
+                    <div class="col-12 px-4 py-3 d-flex align-items-center">
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Nome</h2>
+                        </div>
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Cargo</h2>
+                        </div>
+
+                        <div class="col-3">
+                            <h2 class="c-brown">Ações</h2>
+                        </div>
+
+                    </div>
+
+                    {% for b in barbeiros %}
+                    <div class="col-12 px-4 py-3 my-4 d-flex align-items-center bgc-gray3">
+
+                        <div class="col-3">
+                            <h3 class="c-black">{{b.nome}}</h3>
+                        </div>
+                        
+                        <div class="col-3">
+                            <h3 class="c-black">Barbeiro</h3>
+                        </div>
+
+                        <div class="col-3 d-flex px-0">
+
+                            <!-- <div class="col-5">
+                                <button class="bgc-blue btn__pattern py-2" type="submit">
+                                    Editar
+                                </button>
+                            </div> -->
+
+                            {% if b.id_barbeiro != session['id_barbeiro'] %}
+                            <div class="col-7 px-0">
+                                {% if b.status_bloqueio == 1 %}
+                                <button id="btn-bloquear" class="bgc-blue btn__pattern py-2 px-4 d-flex align-items-center justify-content-center" type="submit" data-barbeiro="{{b.id_barbeiro}}" onclick="bloquearFuncionario(this)">
+                                    <p class="m-0 p-0">Desbloquear</p>
+                                    <img src="../static/img/icon/excluir.svg" alt="" class="u-img-delete ml-2">
+                                </button>
+                                {% else %}
+                                <button id="btn-bloquear" class="bgc-blue btn__pattern py-2 px-4 d-flex align-items-center justify-content-center blocked" type="submit" data-barbeiro="{{b.id_barbeiro}}" onclick="bloquearFuncionario(this)">
+                                    <p class="m-0 p-0">Bloquear</p>
+                                    <img src="../static/img/icon/excluir.svg" alt="" class="u-img-delete ml-2">
+                                </button>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            
+                        </div>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="vfuncionarios">
+        <a href="#" onclick="history.go(-1)" class="btn btn-primary btn-lg">Voltar</a>
+   </div>
+
+</section>
+
+
+<!-- <h1>Listagem de funcionarios</h1>
+
+<div>
+    <table>
+        <thead>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
+        </thead>
+        <tbody>
+            {% for barbeiro in barbeiros %}
+            <tr>
+                <td>{{barbeiro['nome']}}</td>
+                <td>{{barbeiro['email']}}</td>
+                <td>
+                    <a href="#">[Editar]</a>
+                    <span>|</span>
+                    <a href="#">[Excluir]</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div> -->
+{% endblock %}
