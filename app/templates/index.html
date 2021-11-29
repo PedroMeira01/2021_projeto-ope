@@ -60,7 +60,7 @@
 								<select class="w-100 schedule__service" name="servico" id="servico" required>
 									<option value="" selected>Selecione</option>
 									{% for servico in dados['servicos'] %}
-									<option value="{{servico.id_servico}}">{{servico.nome}}</option>
+									<option value="{{servico.id_servico}}">{{servico.nome}} - R$ 25,00</option>
 									{% endfor %}
 								</select>
 							</div>

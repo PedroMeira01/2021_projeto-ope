@@ -1,8 +1,9 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import desc
+from sqlalchemy import desc, text
 import string    
 import random
+
 
 class Usuario(db.Model):
     # Para que o FlaskLogin funcione, a PK do usuário deve ter o nome "id" apenas.
@@ -84,7 +85,8 @@ class Reserva(db.Model):
                     Reserva.data,
                     Reserva.horario_inicio.label('hora'),
                     Barbeiro.nome.label('barbeiro'), 
-                    Servico.nome.label('servico')
+                    Servico.nome.label('servico'),
+                    Servico.valor
                 )\
                 .filter(Reserva.usuario_id == usuario_id)\
                 .order_by(desc(Reserva.data))
@@ -103,4 +105,13 @@ class Reserva(db.Model):
             )\
             .filter(Reserva.barbeiro_id == barbeiro_id)\
             .order_by(desc(Reserva.data))
+        return reservas
+
+    def valor_total_reservas_por_barbeiro(self, barbeiro_id):
+        reservas = Reserva.query\
+            .join(Servico, Reserva.servico_id==Servico.id_servico)\
+            .add_columns(Servico.valor.label('valor'))\
+            .filter(Reserva.barbeiro_id == barbeiro_id)\
+            .all()
+
         return reservas

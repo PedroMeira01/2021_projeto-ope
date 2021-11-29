@@ -350,14 +350,14 @@ def recuperar_senha():
 @app.route('/admin')
 def admin():
     id_barbeiro = session['id_barbeiro']
-
     page = request.args.get('page', 1, type=int)
-    
     reservas = Reserva()
-
+    valor_total = reservas.valor_total_reservas_por_barbeiro(id_barbeiro)
     reservas = reservas.reservas_por_barbeiro(id_barbeiro).paginate(
         page, 5, False
     )
+    qtd = len(valor_total)
+    total = "R${:.2f}".format(calcula_valor_total_servicos(valor_total)).replace('.',',')
 
     next_url = url_for('admin', page=reservas.next_num) \
         if reservas.has_next else None
@@ -368,8 +368,20 @@ def admin():
         'admin/agendamentos.html', 
         reservas=reservas.items,
         next_url=next_url,
-        prev_url=prev_url
+        prev_url=prev_url,
+        total=total,
+        qtd=qtd
     )
+
+def calcula_valor_total_servicos(total):
+    lista_valores = []
+
+    for t in total:
+        lista_valores.append(t['valor'])
+    
+    return sum(lista_valores)
+
+
 
 @app.route('/funcionarios')
 def listagem_funcionarios():

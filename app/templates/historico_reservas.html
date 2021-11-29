@@ -63,6 +63,7 @@
                             <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
                                 <h2>{{reserva.barbeiro}}</h2>
                                 <p>Serviço: {{reserva.servico}}</p>
+                                <p>Valor: R$ 25,00</p>
                                 {% if not reserva['retroativa'] %}
                                 <a href="{{ url_for('desmarcar', id=reserva.id) }}">
                                     <span class="badge badge-secondary">Cancelar</span>
