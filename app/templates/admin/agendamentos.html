@@ -12,7 +12,7 @@
                 <h1 class="c-brown section__title u-title-after">Agendamentos</h1>
             </div>
 
-            <div class="col-7 historic__card">
+            <div class="col-8 historic__card">
                 
                 <!-- <div class="col-12 px-0 d-flex">
 
@@ -57,9 +57,9 @@
                     </div>
 
                     <div class="col-10 d-flex justify-content-around align-items-center">
-                        <h2>{{r.data}}</h2>
-                        <h2>{{r.servico}}</h2>
-                        <h2>{{r.cliente}}</h2>
+                        <h2 class="dashboard__infos">{{r.data}}</h2>
+                        <h2 class="dashboard__infos">{{r.servico}}</h2>
+                        <h2 class="dashboard__infos">{{r.cliente}}</h2>
                     </div>
 
                 </div>
@@ -73,11 +73,11 @@
                 {% endif %}
             </div>
 
-            <div class="col-4 dashboard__card ml-5 pb-0 px-0">
+            <div class="col-3 dashboard__card ml-5 pb-0 px-0">
 
                 <div class="col-12 d-flex align-items-center justify-content-between">
 
-                    <div class="text-center dashboard__card--numbers">
+                    <div class="text-center dashboard__card--numbers mx-auto">
                         <h3 class="c-gray4">Total de agendamentos</h3>
                         <span class="c-gray4">{{ qtd }}</span>
                     </div>
@@ -96,67 +96,4 @@
     </div>
 
 </section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer">
-</script>
-
-<script>
-    var ctx = document.getElementsByClassName("myChart");
-
-    var chartGraph = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Jan","Fev","Mar","Abr","Maio","Jun"],
-            datasets: [{
-                label: "Agendamentos dos últimos 6 meses - 2021",
-                data: [5,10,4,3,8,4],
-                borderWidth: 6,
-                borderColor: 'rgba(77, 166,253,0.85)',
-                backgroundColor: 'transparent',
-            }]
-        },
-        options: {
-            scales: {
-            y: {
-                beginAtZero: true
-            }
-            }
-        },
-        // type: 'line',
-        // data: {
-        //     labels: ["Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan","Jan"],
-        //     datasets: [{
-        //         label: "Taxa de Cliques - 2020",
-        //         data: [5,5,5,5,5,5,5,5,5,5,5,5],
-        //         borderWidth: 6,
-        //         borderColor: 'rgba(77, 166,253,0.85)',
-        //         backgroundColor: 'transparent',
-        //     }]
-        // }
-    });
-
-    var ctx2 = document.getElementsByClassName("myChart2");
-
-    const data = {
-        labels: [
-            'concluídos',
-            'cancelados',
-            'pendentes'
-        ],
-        datasets: [{
-            label: 'My First Dataset',
-            data: [10, 5, 10],
-            backgroundColor: [
-            '#18b14b',
-            '#c41616',
-            '#f4b800'
-            ],
-            hoverOffset: 4
-        }]
-    };
-
-    var chartGraph2 = new Chart(ctx2, {
-        type: 'doughnut',
-        data: data,
-    });
-</script>
 {% endblock %}
