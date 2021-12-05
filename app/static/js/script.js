@@ -8,7 +8,7 @@ const quadro_horarios = document.querySelector('#quadro-horarios');
 
 function buscaQuadroHorariosAtualizado() {
 	const xhr = new XMLHttpRequest();
-	const url = '/';
+	const url = '/index';
 	
 	let id_barbeiro;
 	const barbeiros = document.querySelectorAll('.barbeiro');
@@ -36,6 +36,7 @@ function buscaQuadroHorariosAtualizado() {
 }
 
 function atualizaQuadroHorarios(dados) {
+	console.log(dados);
 	const horarios = JSON.parse(dados);
 	// Remove os horários
 	while (quadro_horarios.lastChild) {
