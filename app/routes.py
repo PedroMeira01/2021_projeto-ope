@@ -220,7 +220,9 @@ def login():
 @app.route('/login_admin', methods=['GET', 'POST'])
 def login_admin():
     # Verifica se o usuário já está logado
-    if 'id_barbeiro' in session:
+    if 'id_usuario' in session:
+        return redirect(url_for('index'))
+    elif 'id_barbeiro' in session:
         return redirect(url_for('admin'))
 
     form = LoginForm()

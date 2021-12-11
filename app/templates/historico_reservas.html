@@ -60,7 +60,7 @@
                                 <h3 class="c-white">{{reserva.hora}}</h3>
                             </div>
 
-                            <div class="col-9 pl-5 position-relative d-flex flex-column justify-content-center">
+                            <div class="col-9 pl-5 py-4 position-relative d-flex flex-column justify-content-center">
                                 <h2>{{reserva.barbeiro}}</h2>
                                 <p>Serviço: {{reserva.servico}}</p>
                                 <p>Valor: R$ 25,00</p>
@@ -73,21 +73,22 @@
                         </div>
                     {% endfor %}
 
-                    {% if prev_url %}
-                    <a href="{{ prev_url }}">Anterior</a>
-                    {% endif %}
-                    {% if next_url %}
-                    <a href="{{ next_url }}">Próximo</a>
-                    {% endif %}
-
                 </div>
+
+                {% if prev_url %}
+                <a class="btn btn-primary btn-lg" href="{{ prev_url }}">Anterior</a>
+                {% endif %}
+                {% if next_url %}
+                <a class="btn btn-primary btn-lg" href="{{ next_url }}">Próximo</a>
+                {% endif %}
 
             </div>
 
+            <div class="vhistorico">
+                <a href="#" onclick="history.go(-1)" class="btn btn-primary btn-lg ml-0 mt-5">Voltar</a>
+           </div>
+
         </div>
     </div>
-    <div class="vhistorico">
-        <a href="#" onclick="history.go(-1)" class="btn btn-primary btn-lg">Voltar</a>
-   </div>
 </section>
 {% endblock %}
